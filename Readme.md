@@ -31,7 +31,7 @@ Trans Neft Energo - Power Project
 | APITestConsoleApp | | | `:green_heart:` | | | | | |
 | Contract.Interfaces | | | | `:green_heart:` | | | | |
 | Contract.DTO | | | | | `:green_heart:` | | | |
-| Infrastructure | | | | | | `:green_heart:` | `:white_check_mark:` | |
+| Infrastructure | | | | | | `:green_heart:` | :white_check_mark: | |
 | Domain | | | | | | `:white_check_mark:` | `:green_heart:` | |
 | Logics | | | | | | | | `:green_heart:` |
 
