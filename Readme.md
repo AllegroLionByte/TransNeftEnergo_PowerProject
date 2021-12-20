@@ -26,14 +26,14 @@ Trans Neft Energo - Power Project
 
 | Проект | WebAPI | WebAPI.Test | APITestConsoleApp | Contract.Interfaces | Contract.DTO | Infrastructure | Domain | Logics |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| WebAPI | `:green_heart:` | | | | | | | |
-| WebAPI.Test | | `:green_heart:` | | | | | | |
-| APITestConsoleApp | | | `:green_heart:` | | | | | |
-| Contract.Interfaces | | | | `:green_heart:` | | | | |
-| Contract.DTO | | | | | `:green_heart:` | | | |
-| Infrastructure | | | | | | `:green_heart:` | :white_check_mark: | |
-| Domain | | | | | | `:white_check_mark:` | `:green_heart:` | |
-| Logics | | | | | | | | `:green_heart:` |
+| WebAPI | :green_heart: | | | | | | | |
+| WebAPI.Test | | :green_heart: | | | | | | |
+| APITestConsoleApp | | | :green_heart: | | | | | |
+| Contract.Interfaces | | | | :green_heart: | | | | |
+| Contract.DTO | | | | | :green_heart: | | | |
+| Infrastructure | | | | | | :green_heart: | :white_check_mark: | |
+| Domain | | | | | | :white_check_mark: | :green_heart: | |
+| Logics | | | | | | | | :green_heart: |
 
 ## Запуск
 Запускаемым проектом в решении назначен `WebAPI`. Приложение запускает веб-сервер Kestrel на порту 8050. Для быстрого теста API можно воспользоваться подключенным к проекту Swagger'ом. Чтобы запустить тестирующее API консольное приложение необходимо запустить следующий файл:
