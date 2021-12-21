@@ -23,6 +23,6 @@ namespace TNEPowerProject.Domain.Entities
         /// <summary>
         /// Список дочерних организаций
         /// </summary>
-        public IList<SubOrganization> SubOrganizations { get; set; }
+        public virtual ICollection<SubOrganization> SubOrganizations { get; set; }
     }
 }

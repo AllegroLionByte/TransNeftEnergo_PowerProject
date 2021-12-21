@@ -33,6 +33,6 @@ namespace TNEPowerProject.Domain.Entities
         /// <summary>
         /// Список объектов потребления для дочерней организации
         /// </summary>
-        public IList<ElectricityConsumptionObject> ElectricityConsumptionObjects { get; set; }
+        public virtual ICollection<ElectricityConsumptionObject> ElectricityConsumptionObjects { get; set; }
     }
 }
