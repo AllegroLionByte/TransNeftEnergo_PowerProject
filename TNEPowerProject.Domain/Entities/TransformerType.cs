@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using TNEPowerProject.Domain.Interfaces;
 
 namespace TNEPowerProject.Domain.Entities
 {
     /// <summary>
     /// Представляет описание типа трансформатора
     /// </summary>
-    public class TransformerType
+    public class TransformerType : TNEEntityBase
     {
         /// <summary>
         /// Классифицирует трансформатор по роду работы
@@ -21,10 +22,6 @@ namespace TNEPowerProject.Domain.Entities
             /// </summary>
             Voltage = 1
         }
-        /// <summary>
-        /// Уникальный идентификатор типа трансформатора
-        /// </summary>
-        public int Id { get; set; }
         /// <summary>
         /// Род работы трансформатора
         /// </summary>

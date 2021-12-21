@@ -1,16 +1,13 @@
 ﻿using System.Collections.Generic;
+using TNEPowerProject.Domain.Interfaces;
 
 namespace TNEPowerProject.Domain.Entities
 {
     /// <summary>
     /// Представляет описание типа счётчика электрической энергии
     /// </summary>
-    public class ElectricEnergyMeterType
+    public class ElectricEnergyMeterType : TNEEntityBase
     {
-        /// <summary>
-        /// Уникальный идентификатор типа счётчика электрической энергии
-        /// </summary>
-        public int Id { get; set; }
         /// <summary>
         /// Описание (название) типа счётчика электрической энергии
         /// </summary>

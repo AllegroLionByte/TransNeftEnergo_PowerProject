@@ -1,16 +1,13 @@
 ﻿using System.Collections.Generic;
+using TNEPowerProject.Domain.Interfaces;
 
 namespace TNEPowerProject.Domain.Entities
 {
     /// <summary>
     /// Представляет описание организации
     /// </summary>
-    public class Organization
+    public class Organization : TNEEntityBase
     {
-        /// <summary>
-        /// Уникальный идентификатор организации
-        /// </summary>
-        public int Id { get; set; }
         /// <summary>
         /// Имя организации
         /// </summary>

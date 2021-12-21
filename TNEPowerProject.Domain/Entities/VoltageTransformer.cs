@@ -1,16 +1,13 @@
 ﻿using System;
+using TNEPowerProject.Domain.Interfaces;
 
 namespace TNEPowerProject.Domain.Entities
 {
     /// <summary>
     /// Представляет описание трансформатора напряжения
     /// </summary>
-    public class VoltageTransformer
+    public class VoltageTransformer : TNEEntityBase
     {
-        /// <summary>
-        /// Уникальный идентификатор трансформатора напряжения
-        /// </summary>
-        public int Id { get; set; }
         /// <summary>
         /// Номер трансформатора напряжения
         /// </summary>

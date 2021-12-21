@@ -1,16 +1,13 @@
 ﻿using System.Collections.Generic;
+using TNEPowerProject.Domain.Interfaces;
 
 namespace TNEPowerProject.Domain.Entities
 {
     /// <summary>
     /// Представляет точку поставки электроэнергии
     /// </summary>
-    public class ElectricitySupplyPoint
+    public class ElectricitySupplyPoint : TNEEntityBase
     {
-        /// <summary>
-        /// Уникальный идентификатор точки поставки электроэнергии
-        /// </summary>
-        public int Id { get; set; }
         /// <summary>
         /// Наименование точки поставки электроэнергии
         /// </summary>

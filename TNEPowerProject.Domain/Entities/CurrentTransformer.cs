@@ -1,16 +1,13 @@
 ﻿using System;
+using TNEPowerProject.Domain.Interfaces;
 
 namespace TNEPowerProject.Domain.Entities
 {
     /// <summary>
     /// Представляет описание трансформатора тока
     /// </summary>
-    public class CurrentTransformer
+    public class CurrentTransformer : TNEEntityBase
     {
-        /// <summary>
-        /// Уникальный идентификатор трансформатора тока
-        /// </summary>
-        public int Id { get; set; }
         /// <summary>
         /// Номер трансформатора тока
         /// </summary>

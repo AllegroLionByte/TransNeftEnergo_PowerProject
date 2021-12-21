@@ -1,16 +1,13 @@
 ﻿using System.Collections.Generic;
+using TNEPowerProject.Domain.Interfaces;
 
 namespace TNEPowerProject.Domain.Entities
 {
     /// <summary>
     /// Представляет описание точки измерения электроэнергии
     /// </summary>
-    public class ElectricityMeasuringPoint
+    public class ElectricityMeasuringPoint : TNEEntityBase
     {
-        /// <summary>
-        /// Уникальный идентификатор точки измерения электроэнергии
-        /// </summary>
-        public int Id { get; set; }
         /// <summary>
         /// Наименование точки измерения электроэнергии
         /// </summary>

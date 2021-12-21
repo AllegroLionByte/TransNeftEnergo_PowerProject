@@ -1,16 +1,13 @@
 ﻿using System.Collections.Generic;
+using TNEPowerProject.Domain.Interfaces;
 
 namespace TNEPowerProject.Domain.Entities
 {
     /// <summary>
     /// Представляет описание объекта потребления
     /// </summary>
-    public class ElectricityConsumptionObject
+    public class ElectricityConsumptionObject : TNEEntityBase
     {
-        /// <summary>
-        /// Уникальный идентификатор объекта потребления
-        /// </summary>
-        public int Id { get; set; }
         /// <summary>
         /// Наименование объекта потребления
         /// </summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using TNEPowerProject.Domain.Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TNEPowerProject.Domain.Entities
@@ -6,12 +7,8 @@ namespace TNEPowerProject.Domain.Entities
     /// <summary>
     /// Представляет описание счётчика электрической энергии
     /// </summary>
-    public class ElectricEnergyMeter
+    public class ElectricEnergyMeter : TNEEntityBase
     {
-        /// <summary>
-        /// Уникальный идентификатор счётчика электрической энергии
-        /// </summary>
-        public int Id { get; set; }
         /// <summary>
         /// Номер счётчика электрической энергии
         /// </summary>

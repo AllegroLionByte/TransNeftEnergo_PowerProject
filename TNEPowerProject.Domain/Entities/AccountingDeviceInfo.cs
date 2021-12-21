@@ -1,16 +1,13 @@
 ﻿using System;
+using TNEPowerProject.Domain.Interfaces;
 
 namespace TNEPowerProject.Domain.Entities
 {
     /// <summary>
     /// Представляет описание расчётного прибора учёта
     /// </summary>
-    public class AccountingDeviceInfo
+    public class AccountingDeviceInfo : TNEEntityBase
     {
-        /// <summary>
-        /// Уникальный идентификатор расчётного прибора учёта
-        /// </summary>
-        public int Id { get; set; }
         /// <summary>
         /// Указывает начало расчётного периода
         /// </summary>

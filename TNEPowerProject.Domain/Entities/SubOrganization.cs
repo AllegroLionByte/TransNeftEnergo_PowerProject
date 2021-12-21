@@ -1,17 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using TNEPowerProject.Domain.Interfaces;
 
 namespace TNEPowerProject.Domain.Entities
 {
     /// <summary>
     /// Представляет описание дочерней организации
     /// </summary>
-    public class SubOrganization
+    public class SubOrganization : TNEEntityBase
     {
-        /// <summary>
-        /// Уникальный идентификатор дочерней организации
-        /// </summary>
-        public int Id { get; set; }
         /// <summary>
         /// Имя организации
         /// </summary>
