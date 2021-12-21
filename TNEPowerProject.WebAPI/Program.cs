@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace TNEPowerProject.WebAPI
@@ -20,7 +22,16 @@ namespace TNEPowerProject.WebAPI
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>()
+                    .UseKestrel(options =>
+                     {
+                         options.Limits.MaxConcurrentConnections = 100;
+                         options.Limits.MaxRequestBodySize = 100 * 1024;
+                         options.Limits.MinRequestBodyDataRate =
+                             new MinDataRate(bytesPerSecond: 100, gracePeriod: TimeSpan.FromSeconds(10));
+                         options.Limits.MinResponseDataRate =
+                             new MinDataRate(bytesPerSecond: 100, gracePeriod: TimeSpan.FromSeconds(10));
+                     });
                 });
     }
 }

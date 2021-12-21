@@ -1,9 +1,9 @@
 ﻿{
   "iisSettings": {
-    "windowsAuthentication": false, 
-    "anonymousAuthentication": true, 
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:6293",
+      "applicationUrl": "http://localhost:6293/swagger",
       "sslPort": 44308
     }
   },
@@ -15,10 +15,12 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    // Kestrel
     "TNEPowerProject.WebAPI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:8081;http://localhost:8080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
