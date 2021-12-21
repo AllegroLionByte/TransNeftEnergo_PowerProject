@@ -31,10 +31,10 @@ namespace TNEPowerProject.Domain.Entities
         /// <summary>
         /// Список точек измерения электроэнергии, входящих в объект потребления
         /// </summary>
-        public IList<ElectricityMeasuringPoint> MeasuringPoints { get; set; }
+        public virtual ICollection<ElectricityMeasuringPoint> MeasuringPoints { get; set; }
         /// <summary>
         /// Список точек поставки электроэнергии, входящих в объект потребления
         /// </summary>
-        public IList<ElectricitySupplyPoint> SupplyPoints { get; set; }
+        public virtual ICollection<ElectricitySupplyPoint> SupplyPoints { get; set; }
     }
 }
