@@ -5,4 +5,8 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TNEPowerProject.Contract.Enums\TNEPowerProject.Contract.Enums.csproj" />
+  </ItemGroup>
+
 </Project>
