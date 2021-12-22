@@ -1,5 +1,5 @@
 ﻿using System;
-using TNEPowerProject.Domain.Interfaces;
+using TNEPowerProject.Domain.Abstract;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TNEPowerProject.Domain.Entities

@@ -1,5 +1,5 @@
 ﻿
-namespace TNEPowerProject.Domain.Interfaces
+namespace TNEPowerProject.Domain.Abstract
 {
     /// <summary>
     /// Представляет общую базовую сущность для всех сущностей проекта TNEPowerProject

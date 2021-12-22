@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using TNEPowerProject.Domain.Interfaces;
+using TNEPowerProject.Domain.Abstract;
 
 namespace TNEPowerProject.Domain.Repository
 {

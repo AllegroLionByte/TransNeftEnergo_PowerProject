@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using TNEPowerProject.Domain.Interfaces;
+using TNEPowerProject.Domain.Abstract;
 using TNEPowerProject.Domain.Repository;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 

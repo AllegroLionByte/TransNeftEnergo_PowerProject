@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using TNEPowerProject.Domain.Interfaces;
+using TNEPowerProject.Domain.Abstract;
 
 namespace TNEPowerProject.Domain.Entities
 {
