@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TNEPowerProject.Domain.Abstract;
-using TNEPowerProject.Domain.Repository;
+using TNEPowerProject.Domain.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace TNEPowerProject.Infrastructure.Repository

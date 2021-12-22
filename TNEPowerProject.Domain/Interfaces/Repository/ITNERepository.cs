@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using TNEPowerProject.Domain.Abstract;
 
-namespace TNEPowerProject.Domain.Repository
+namespace TNEPowerProject.Domain.Interfaces.Repository
 {
     /// <summary>
     /// Представляет интерфейс репозитория в проекте TNEPowerProject. Реализующий класс обязан также реализовать интерфейс IDisposable

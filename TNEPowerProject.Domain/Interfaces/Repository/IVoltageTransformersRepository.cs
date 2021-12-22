@@ -1,6 +1,6 @@
 ﻿using TNEPowerProject.Domain.Entities;
 
-namespace TNEPowerProject.Domain.Repository
+namespace TNEPowerProject.Domain.Interfaces.Repository
 {
     /// <summary>
     /// Представляет интерфейс для репозитория трансформаторов напряжения

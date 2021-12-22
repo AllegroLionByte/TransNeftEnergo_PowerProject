@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TNEPowerProject.Domain.Entities;
-using TNEPowerProject.Domain.Repository;
+using TNEPowerProject.Domain.Interfaces.Repository;
 
 namespace TNEPowerProject.Infrastructure.Repository
 {
