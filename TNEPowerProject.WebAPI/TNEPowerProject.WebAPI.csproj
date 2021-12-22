@@ -10,6 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TNEPowerProject.Contract.Enums\TNEPowerProject.Contract.Enums.csproj" />
+    <ProjectReference Include="..\TNEPowerProject.Contract.Interfaces\TNEPowerProject.Contract.Interfaces.csproj" />
     <ProjectReference Include="..\TNEPowerProject.Infrastructure\TNEPowerProject.Infrastructure.csproj" />
   </ItemGroup>
 
