@@ -5,13 +5,13 @@ using TNEPowerProject.Infrastructure.Database.EFCore;
 
 namespace TNEPowerProject.WebAPI.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public class VoltageTransformersController : ControllerBase
+    [ApiController]
+    public class TransformerTypesController : ControllerBase
     {
         private readonly EnergoDBContext energoContext;
 
-        public VoltageTransformersController(EnergoDBContext energoContext)
+        public TransformerTypesController(EnergoDBContext energoContext)
         {
             this.energoContext = energoContext;
         }
@@ -19,7 +19,13 @@ namespace TNEPowerProject.WebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok();
+            return Ok(energoContext.TransformerTypes.ToList());
+        }
+
+        [HttpGet("v2")]
+        public IActionResult Getv2()
+        {
+            return Ok(energoContext.TransformerTypes.ToList());
         }
     }
 }
