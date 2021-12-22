@@ -11,6 +11,7 @@ Trans Neft Energo - Power Project
 + `Contract` - Содержит набор общих интерфейсов и DTO, используемых на презентационном уровне для приложений `WebAPI` и `APITestConsoleApp`;
     + `Contract.Interfaces` - Содержит набор интерфейсов API для реализации в проектах;
     + `Contract.DTO` - Содержит набор DTO, возвращаемых API;
+    + `Contract.Enums` - Содержит перечисления, используемые в API;
 + `Infrastructure` - Содержит контекст БД для EnergoDB, а также класс для начальной инициализации БД, и класс конфигурации контекста;
 + `Domain` - Содержит набор сущностей проекта, интерфейсы для репозитория и сервисов;
 + `Logics` - Определяет уровень бизнес-логики приложения. Содержит реализации репозиториев и сервисов.
@@ -20,21 +21,24 @@ Trans Neft Energo - Power Project
 ### Внешние зависимости
 
 + Microsoft.EntityFrameworkCore **v5.0.13** - `Infrastructure`;
-+ Swashbuckle.AspNetCore **6.2.3** - `WebAPI`;
++ Microsoft.EntityFrameworkCore.SqlServer **v5.0.13** - `WebAPI`;
++ Microsoft.AspNetCore.Mvc.Core **v2.2.5** - `Contract.Interfaces`;
++ Swashbuckle.AspNetCore **v6.2.3** - `WebAPI`;
 
 
 ### Ссылки на проекты
 
-| Проект | WebAPI | WebAPI.Test | APITestConsoleApp | Contract.Interfaces | Contract.DTO | Infrastructure | Domain | Logics |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| WebAPI | :green_heart: | | | | | | | |
-| WebAPI.Test | | :green_heart: | | | | | | |
-| APITestConsoleApp | | | :green_heart: | | | | | |
-| Contract.Interfaces | | | | :green_heart: | | | | |
-| Contract.DTO | | | | | :green_heart: | | | |
-| Infrastructure | | | | | | :green_heart: | :white_check_mark: | |
-| Domain | | | | | | :white_check_mark: | :green_heart: | |
-| Logics | | | | | | | | :green_heart: |
+| Проект | Зависимости |
+| :---: | :---: |
+| `WebAPI`             | `Infrastructure`, `Contract.Interfaces`, `Contract.Enums` |
+| `WebAPI.Test`        | |
+| `APITestConsoleApp` | |
+| `Contract.Interfaces` | `Contract.DTO` |
+| `Contract.DTO`       | `Contract.Enums` |
+| `Contract.Enums`     | |
+| `Infrastructure`      | `Domain` |
+| `Domain`              | |
+| `Logics`              | `Domain` |
 
 ## Заметки
 + Сущности `Организация` и `Дочерняя организация` можно было бы объединить в одну, с указанием в отдельном столбце вида организации, однако, так как на схеме модели классов указаны обе сущности, в проекте они также реализованы раздельно;
