@@ -163,6 +163,7 @@ namespace TNEPowerProject.Infrastructure.Database.EFCore
                         DateTime verificationDate = GetRandomVerificationDate(rnd);
                         ElectricEnergyMeter eEMeter = new ElectricEnergyMeter()
                         {
+                            Id = measuringPointId, // Можно допустить, что к точке измерения прикрепляется счётчик с тем же Id
                             Number = rnd.Next(100000, int.MaxValue),
                             VerificationDate = verificationDate,
                             VerificationPeriod = GetRandomVerificationPeriod(rnd, verificationDate),
@@ -174,6 +175,7 @@ namespace TNEPowerProject.Infrastructure.Database.EFCore
                         verificationDate = GetRandomVerificationDate(rnd);
                         CurrentTransformer cTrans = new CurrentTransformer()
                         {
+                            Id = measuringPointId, // Можно допустить, что к точке измерения прикрепляется трансформатор с тем же Id
                             Number = rnd.Next(100000, int.MaxValue),
                             VerificationDate = verificationDate,
                             VerificationPeriod = GetRandomVerificationPeriod(rnd, verificationDate),
@@ -186,6 +188,7 @@ namespace TNEPowerProject.Infrastructure.Database.EFCore
                         verificationDate = GetRandomVerificationDate(rnd);
                         VoltageTransformer vTrans = new VoltageTransformer()
                         {
+                            Id = measuringPointId, // Можно допустить, что к точке измерения прикрепляется трансформатор с тем же Id
                             Number = rnd.Next(100000, int.MaxValue),
                             VerificationDate = verificationDate,
                             VerificationPeriod = GetRandomVerificationPeriod(rnd, verificationDate),
