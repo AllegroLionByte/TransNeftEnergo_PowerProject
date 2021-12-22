@@ -13,10 +13,7 @@ namespace TNEPowerProject.Infrastructure.Repository
         /// <summary>
         /// Представляет реализацию репозитория трансформаторов напряжения
         /// </summary>
-        public VoltageTransformersRepository(DbContext dbContext, ILogger logger) : base(dbContext, logger)
-        {
-
-        }
+        public VoltageTransformersRepository(DbContext dbContext, ILogger logger) : base(dbContext, logger) { }
 
     }
 }
