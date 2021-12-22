@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using TNEPowerProject.Infrastructure.Database.EFCore;
+using TNEPowerProject.Contract.Interfaces;
 
 namespace TNEPowerProject.WebAPI.Controllers
 {
@@ -21,5 +22,6 @@ namespace TNEPowerProject.WebAPI.Controllers
         {
             return Ok();
         }
+
     }
 }
