@@ -58,7 +58,7 @@ namespace TNEPowerProject.Infrastructure.Database.EFCore
         public EnergoDBContext(DbContextOptions<EnergoDBContext> options)
             : base(options)
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
