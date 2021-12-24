@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using TNEPowerProject.Infrastructure.Database.EFCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using TNEPowerProject.Contract.Interfaces;
 using System.Threading.Tasks;
 using TNEPowerProject.Contract.DTO.Transformers;
-using TNEPowerProject.Contract.Enums;
+using TNEPowerProject.Logics.Interfaces.Services;
 
 namespace TNEPowerProject.WebAPI.Controllers
 {
@@ -13,17 +10,21 @@ namespace TNEPowerProject.WebAPI.Controllers
     [ApiController]
     public class TransformerTypesController : ControllerBase, ITransformerTypesAPI
     {
-        private readonly EnergoDBContext energoContext;
+        private readonly ITransformerTypesService transformerTypesService;
 
-        public TransformerTypesController(EnergoDBContext energoContext)
+        public TransformerTypesController(ITransformerTypesService transformerTypesService)
         {
-            this.energoContext = energoContext;
+            this.transformerTypesService = transformerTypesService;
         }
-
-        [HttpGet("list")]
-        public Task<TransformerTypesListDTO> GetAll()
+        [HttpPost]
+        public async Task<TransformerTypeDTO> CreateTransformerType(CreateTransformerTypeDTO createTransformerTypeDTO)
         {
-            throw new System.NotImplementedException();
+            return await transformerTypesService.CreateTransformerType(createTransformerTypeDTO);
+        }
+        [HttpGet("list")]
+        public async Task<TransformerTypesListDTO> GetAll()
+        {
+            return await transformerTypesService.GetAllTransformerTypes();
         }
     }
 }

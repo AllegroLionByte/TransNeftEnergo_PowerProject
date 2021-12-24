@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TNEPowerProject.Infrastructure.Database.EFCore;
+using TNEPowerProject.Logics.Interfaces.Services;
+using TNEPowerProject.Logics.Services;
 
 namespace TNEPowerProject.WebAPI
 {
@@ -26,6 +28,7 @@ namespace TNEPowerProject.WebAPI
         {
             string energoDBConnectionString = Configuration.GetConnectionString("EnergoDBConnectionString");
             services.AddDbContext<EnergoDBContext>(options => options.UseSqlServer(energoDBConnectionString));
+            services.AddScoped<ITransformerTypesService, TransformerTypesService>();
 
             services.AddControllers();
 

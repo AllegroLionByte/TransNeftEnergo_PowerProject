@@ -8,6 +8,7 @@ using TNEPowerProject.Logics.Interfaces.Services;
 using TNEPowerProject.Contract.DTO.Transformers;
 using TNEPowerProject.Infrastructure.Database.EFCore;
 using System;
+using System.Collections.Generic;
 
 namespace TNEPowerProject.Logics.Services
 {
@@ -20,28 +21,46 @@ namespace TNEPowerProject.Logics.Services
         /// <summary>
         /// Представляет реализацию сервиса для типов трансформаторов
         /// </summary>
+        public TransformerTypesService(EnergoDBContext dbContext) : this(dbContext, null) { }
+        /// <summary>
+        /// Представляет реализацию сервиса для типов трансформаторов
+        /// </summary>
         public TransformerTypesService(EnergoDBContext dbContext, ILogger logger)
         {
-            this.transformerTypesRepository = new TransformerTypesRepository(dbContext, logger);
+            transformerTypesRepository = new TransformerTypesRepository(dbContext, logger);
         }
         /// <summary>
         /// Позволяет добавить новый тип трансформатора
         /// </summary>
-        /// <param name="transformerTypeDTO">Сущность, описывающая новый тип трансформатора</param>
-        public async Task<TransformerTypeDTO> CreateTransformerType(TransformerTypeDTO transformerTypeDTO)
+        /// <param name="createTransformerTypeDTO">Сущность, описывающая новый тип трансформатора</param>
+        public async Task<TransformerTypeDTO> CreateTransformerType(CreateTransformerTypeDTO createTransformerTypeDTO)
         {
-            if (string.IsNullOrWhiteSpace(transformerTypeDTO.Description) || !Enum.IsDefined(typeof(TransformerType.TransformerPurpose), transformerTypeDTO.TransformerPurpose))
+            if (string.IsNullOrWhiteSpace(createTransformerTypeDTO.Description))
             {
-                transformerTypeDTO.StatusCode = (int)RestResponseCode.BadRequest;
-                return transformerTypeDTO;
+                return new TransformerTypeDTO(RestResponseCode.BadRequest, "Не указано описание (название) типа трансформатора.");
             }
-            await transformerTypesRepository.Add(new TransformerType()
+            else if (!Enum.IsDefined(typeof(TransformerType.TransformerPurpose), createTransformerTypeDTO.TransformerPurpose))
             {
-                Description = transformerTypeDTO.Description,
-                Purpose = (TransformerType.TransformerPurpose)transformerTypeDTO.TransformerPurpose
+                return new TransformerTypeDTO(RestResponseCode.BadRequest, "Указан неправильный род работы трансформатора.");
+            }
+            TransformerType createTTResult = await transformerTypesRepository.Add(new TransformerType()
+            {
+                Description = createTransformerTypeDTO.Description.Trim(),
+                Purpose = (TransformerType.TransformerPurpose)createTransformerTypeDTO.TransformerPurpose
             });
-            transformerTypeDTO.StatusCode = (int)RestResponseCode.Created;
-            return transformerTypeDTO;
+            if (createTTResult == null)
+            {
+                return new TransformerTypeDTO(RestResponseCode.InternalServerError, "Произошла ошибка при попытке добавления нового типа трансформатора.");
+            }
+            else
+            {
+                return new TransformerTypeDTO(RestResponseCode.Created)
+                {
+                    Description = createTTResult.Description,
+                    Id = createTTResult.Id,
+                    TransformerPurpose = (int)createTTResult.Purpose
+                };
+            }
         }
         /// <summary>
         /// Позволяет получить список всех типов трансформаторов

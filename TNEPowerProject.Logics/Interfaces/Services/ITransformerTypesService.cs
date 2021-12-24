@@ -11,7 +11,7 @@ namespace TNEPowerProject.Logics.Interfaces.Services
         /// <summary>
         /// Позволяет добавить новый тип трансформатора
         /// </summary>
-        Task<TransformerTypeDTO> CreateTransformerType(TransformerTypeDTO transformerTypeDTO);
+        Task<TransformerTypeDTO> CreateTransformerType(CreateTransformerTypeDTO createTransformerTypeDTO);
         /// <summary>
         /// Позволяет получить список всех типов трансформаторов
         /// </summary>
