@@ -10,7 +10,7 @@ namespace TNEPowerProject.Contract.DTO
         /// <summary>
         /// Статус операции согласно спецификации REST API
         /// </summary>
-        public int StatusCode { get; private set; }
+        public int StatusCode { get; set; }
         /// <summary>
         /// Конструирует ответ с указанием статуса операции
         /// </summary>
