@@ -21,6 +21,11 @@ namespace TNEPowerProject.WebAPI.Controllers
         {
             return await transformerTypesService.CreateTransformerType(createTransformerTypeDTO);
         }
+        [HttpGet("exists")]
+        public async Task<TransformerTypeExistenceDTO> CheckTransformerTypeExists(int transformerTypeId)
+        {
+            return await transformerTypesService.CheckTransformerTypeExists(transformerTypeId);
+        }
         [HttpGet("list")]
         public async Task<TransformerTypesListDTO> GetAll()
         {

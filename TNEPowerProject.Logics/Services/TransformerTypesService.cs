@@ -63,6 +63,19 @@ namespace TNEPowerProject.Logics.Services
             }
         }
         /// <summary>
+        /// Метод для проверки существования типа трансформатора с указанным Id
+        /// </summary>
+        /// <param name="transformerTypeId">
+        /// Id типа трансформатора
+        /// </param>
+        public async Task<TransformerTypeExistenceDTO> CheckTransformerTypeExists(int transformerTypeId)
+        {
+            return new TransformerTypeExistenceDTO(RestResponseCode.OK)
+            {
+                Exists = await transformerTypesRepository.Exists(x => x.Id == transformerTypeId)
+            };
+        }
+        /// <summary>
         /// Позволяет получить список всех типов трансформаторов
         /// </summary>
         public async Task<TransformerTypesListDTO> GetAllTransformerTypes()

@@ -16,5 +16,12 @@ namespace TNEPowerProject.Logics.Interfaces.Services
         /// Позволяет получить список всех типов трансформаторов
         /// </summary>
         Task<TransformerTypesListDTO> GetAllTransformerTypes();
+        /// <summary>
+        /// Позволяет проверить существование типа трансформатора с указанным Id
+        /// </summary>
+        /// <param name="transformerTypeId">
+        /// Id типа трансформатора
+        /// </param>
+        Task<TransformerTypeExistenceDTO> CheckTransformerTypeExists(int transformerTypeId);
     }
 }

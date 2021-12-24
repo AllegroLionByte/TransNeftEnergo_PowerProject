@@ -22,5 +22,13 @@ namespace TNEPowerProject.Contract.Interfaces
         /// </summary>
         [HttpGet("list")]
         Task<TransformerTypesListDTO> GetAll();
+        /// <summary>
+        /// Метод для проверки существования типа трансформатора с указанным Id
+        /// </summary>
+        /// <param name="transformerTypeId">
+        /// Id типа трансформатора
+        /// </param>
+        [HttpGet("exists")]
+        Task<TransformerTypeExistenceDTO> CheckTransformerTypeExists(int transformerTypeId);
     }
 }
