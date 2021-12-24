@@ -1,6 +1,4 @@
-﻿using TNEPowerProject.Contract.Enums;
-
-namespace TNEPowerProject.Contract.DTO.Transformers
+﻿namespace TNEPowerProject.Contract.DTO.Transformers
 {
     /// <summary>
     /// Представляет DTO для создания нового типа трансформатора
