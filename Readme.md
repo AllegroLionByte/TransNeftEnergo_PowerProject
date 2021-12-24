@@ -23,6 +23,7 @@ Trans Neft Energo - Power Project
 + Microsoft.EntityFrameworkCore **v5.0.13** - `Infrastructure`;
 + Microsoft.EntityFrameworkCore.SqlServer **v5.0.13** - `WebAPI`;
 + Microsoft.AspNetCore.Mvc.Core **v2.2.5** - `Contract.Interfaces`;
++ Microsoft.AspNetCore.Mvc.NewtonsoftJson **v3.1.22** - `WebAPI`;
 + Swashbuckle.AspNetCore **v6.2.3** - `WebAPI`;
 
 
