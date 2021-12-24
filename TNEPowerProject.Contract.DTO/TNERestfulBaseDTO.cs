@@ -55,7 +55,7 @@ namespace TNEPowerProject.Contract.DTO
         public TNERestfulBaseDTO(int statusCode, string message)
         {
             StatusCode = statusCode;
-            Message = (string.IsNullOrWhiteSpace(message) ? "An error occurred while processing your request." : message);
+            Message = (string.IsNullOrWhiteSpace(message) ? "" : message);
         }
         /// <summary>
         /// Позволяет задать статус операции согласно спецификации REST API
