@@ -29,6 +29,7 @@ namespace TNEPowerProject.WebAPI
             string energoDBConnectionString = Configuration.GetConnectionString("EnergoDBConnectionString");
             services.AddDbContext<EnergoDBContext>(options => options.UseSqlServer(energoDBConnectionString));
             services.AddScoped<ITransformerTypesService, TransformerTypesService>();
+            services.AddScoped<IElectricEnergyMeterTypesService, ElectricEnergyMeterTypesService>();
 
             services.AddControllers();
 
