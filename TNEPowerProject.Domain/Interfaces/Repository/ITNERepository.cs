@@ -23,7 +23,7 @@ namespace TNEPowerProject.Domain.Interfaces.Repository
         /// <summary>
         /// Позволяет добавить новый объект
         /// </summary>
-        Task<bool> Add(T entity);
+        Task<T> Add(T entity);
         /// <summary>
         /// Позволяет удалить объект по Id
         /// </summary>

@@ -21,12 +21,22 @@ namespace TNEPowerProject.Infrastructure.Repository
         /// </summary>
         protected readonly DbContext dbContext;
         /// <summary>
-        /// Объект контекста для БД
+        /// Объект логгирования.
         /// </summary>
+        /// <remarks>
+        /// [Осторожно] Может быть null!
+        /// </remarks>
         protected readonly ILogger logger;
         private bool _disposed = false;
         /// <summary>
         /// Представляет базовый класс репозитория с общей реализацией в проекте TNEPowerProject
+        /// </summary>
+        public TNERepository(DbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+        /// <summary>
+        /// Представляет базовый класс репозитория с поддержкой логгирования с общей реализацией в проекте TNEPowerProject
         /// </summary>
         public TNERepository(DbContext dbContext, ILogger logger)
         {
@@ -36,18 +46,18 @@ namespace TNEPowerProject.Infrastructure.Repository
         /// <summary>
         /// Позволяет добавить новый объект
         /// </summary>
-        public virtual async Task<bool> Add(T entity)
+        public virtual async Task<T> Add(T entity)
         {
             try
             {
-                EntityEntry<T> eState = await dbContext.Set<T>().AddAsync(entity);
+                EntityEntry<T> eE = await dbContext.Set<T>().AddAsync(entity);
                 await SaveChangesAsync();
-                return eState.State == EntityState.Modified;
+                return eE.Entity;
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "{Repo}: error during creating element {Entity}.", GetType(), typeof(T));
-                return false;
+                logger?.LogError(ex, "{Repo}: error during creating element {Entity}.", GetType(), typeof(T));
+                return null;
             }
         }
         /// <summary>
@@ -66,7 +76,7 @@ namespace TNEPowerProject.Infrastructure.Repository
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "{Repo}: error during deleting element {Entity} by id: {Id}.", GetType(), typeof(T), id);
+                logger?.LogError(ex, "{Repo}: error during deleting element {Entity} by id: {Id}.", GetType(), typeof(T), id);
                 return false;
             }
         }
@@ -81,7 +91,7 @@ namespace TNEPowerProject.Infrastructure.Repository
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "{Repo}: error during finding elements {Entity} by {Pred}.", GetType(), typeof(T), predicate);
+                logger?.LogError(ex, "{Repo}: error during finding elements {Entity} by {Pred}.", GetType(), typeof(T), predicate);
                 return new List<T>();
             }
         }
@@ -96,7 +106,7 @@ namespace TNEPowerProject.Infrastructure.Repository
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "{Repo}: error during getting all elements {Entity}.", GetType(), typeof(T));
+                logger?.LogError(ex, "{Repo}: error during getting all elements {Entity}.", GetType(), typeof(T));
                 return new List<T>();
             }
         }
@@ -111,7 +121,7 @@ namespace TNEPowerProject.Infrastructure.Repository
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "{Repo}: error during getting element {Entity} by id: {Id}.", GetType(), typeof(T), id);
+                logger?.LogError(ex, "{Repo}: error during getting element {Entity} by id: {Id}.", GetType(), typeof(T), id);
                 return default(T);
             }
         }
@@ -126,7 +136,7 @@ namespace TNEPowerProject.Infrastructure.Repository
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "{Repo}: error during checking element existance {Entity} by {Pred}.", GetType(), typeof(T), predicate);
+                logger?.LogError(ex, "{Repo}: error during checking element existance {Entity} by {Pred}.", GetType(), typeof(T), predicate);
                 return false;
             }
         }
