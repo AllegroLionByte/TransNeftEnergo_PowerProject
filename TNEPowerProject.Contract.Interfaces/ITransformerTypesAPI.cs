@@ -9,12 +9,17 @@ namespace TNEPowerProject.Contract.Interfaces
     /// </summary>
     public interface ITransformerTypesAPI
     {
+        ///// <summary>
+        ///// Метод для создания нового типа трансформатора
+        ///// </summary>
+        ///// <param name="transformerTypeDTO"></param>
+        ///// <returns></returns>
+        //[HttpPost]
+        //Task<TransformerTypeDTO> CreateTransformerType(TransformerTypeDTO transformerTypeDTO);
         /// <summary>
-        /// Метод для создания нового типа трансформатора
+        /// Получает список всех типов трансформаторов
         /// </summary>
-        /// <param name="transformerTypeDTO"></param>
-        /// <returns></returns>
-        [HttpPost]
-        Task<TransformerTypeDTO> CreateTransformerType(TransformerTypeDTO transformerTypeDTO);
+        [HttpGet("list")]
+        Task<TransformerTypesListDTO> GetAll();
     }
 }

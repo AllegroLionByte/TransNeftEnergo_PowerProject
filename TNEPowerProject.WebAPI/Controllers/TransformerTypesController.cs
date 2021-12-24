@@ -20,22 +20,10 @@ namespace TNEPowerProject.WebAPI.Controllers
             this.energoContext = energoContext;
         }
 
-        [HttpPost]
-        public Task<TransformerTypeDTO> CreateTransformerType(TransformerTypeDTO transformerTypeDTO)
+        [HttpGet("list")]
+        public Task<TransformerTypesListDTO> GetAll()
         {
-            return Task.FromResult(new TransformerTypeDTO(RestResponseCode.Created));
-        }
-
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok(energoContext.TransformerTypes.ToList());
-        }
-
-        [HttpGet("v2")]
-        public IActionResult Getv2()
-        {
-            return Ok(energoContext.TransformerTypes.ToList());
+            throw new System.NotImplementedException();
         }
     }
 }
