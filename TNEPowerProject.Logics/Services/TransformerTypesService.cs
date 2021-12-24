@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TNEPowerProject.Domain.Entities;
@@ -7,8 +8,6 @@ using TNEPowerProject.Infrastructure.Repository;
 using TNEPowerProject.Logics.Interfaces.Services;
 using TNEPowerProject.Contract.DTO.Transformers;
 using TNEPowerProject.Infrastructure.Database.EFCore;
-using System;
-using System.Collections.Generic;
 
 namespace TNEPowerProject.Logics.Services
 {
