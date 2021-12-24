@@ -1,6 +1,4 @@
 ﻿using TNEPowerProject.Contract.Enums;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TNEPowerProject.Contract.DTO.Transformers
 {
