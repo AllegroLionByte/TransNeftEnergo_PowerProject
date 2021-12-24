@@ -1,4 +1,5 @@
-﻿using TNEPowerProject.Domain.Interfaces.Services;
+﻿using TNEPowerProject.Logics.Interfaces.Services;
+
 namespace TNEPowerProject.Logics.Services
 {
     /// <summary>

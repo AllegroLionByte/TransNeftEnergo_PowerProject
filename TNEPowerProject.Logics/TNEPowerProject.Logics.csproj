@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TNEPowerProject.Contract.DTO\TNEPowerProject.Contract.DTO.csproj" />
     <ProjectReference Include="..\TNEPowerProject.Domain\TNEPowerProject.Domain.csproj" />
+    <ProjectReference Include="..\TNEPowerProject.Infrastructure\TNEPowerProject.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
