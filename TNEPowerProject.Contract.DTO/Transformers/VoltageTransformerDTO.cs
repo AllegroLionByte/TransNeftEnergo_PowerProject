@@ -4,27 +4,27 @@ using TNEPowerProject.Contract.Enums;
 namespace TNEPowerProject.Contract.DTO.Transformers
 {
     /// <summary>
-    /// Представляет DTO для описания трансформатора тока
+    /// Представляет DTO для описания трансформатора напряжения
     /// </summary>
-    public class CurrentTransformerInfoDTO : TNERestfulBaseDTO
+    public class VoltageTransformerDTO : TNERestfulBaseDTO
     {
         /// <summary>
-        /// Представляет DTO для описания трансформатора тока
+        /// Представляет DTO для описания трансформатора напряжения
         /// </summary>
         /// <param name="responseCode">
         /// Статус операции из перечисления TNEPowerProject.Contract.Enums.RestResponseCode
         /// </param>
-        public CurrentTransformerInfoDTO(RestResponseCode responseCode) : base(responseCode) { }
+        public VoltageTransformerDTO(RestResponseCode responseCode) : base(responseCode) { }
         /// <summary>
-        /// Уникальный идентификатор трансформатора тока
+        /// Уникальный идентификатор трансформатора напряжения
         /// </summary>
         public int Id { get; set; }
         /// <summary>
-        /// Номер трансформатора тока
+        /// Номер трансформатора напряжения
         /// </summary>
         public long Number { get; set; }
         /// <summary>
-        /// КТТ - коэфициент трансформации по току
+        /// КТТ - коэфициент трансформации по напряжению
         /// </summary>
         public double TransformationRatio { get; set; }
         /// <summary>
@@ -36,8 +36,12 @@ namespace TNEPowerProject.Contract.DTO.Transformers
         /// </summary>
         public DateTime VerificationPeriod { get; set; }
         /// <summary>
-        /// Представляет тип трансформатора
+        /// Уникальный идентификатор типа трансформатора
         /// </summary>
-        public TransformerTypeDTO TransformerType { get; set; }
+        public int TransformerTypeId { get; set; }
+        /// <summary>
+        /// Описание (название) типа трансформатора
+        /// </summary>
+        public string TransformerTypeDescription { get; set; }
     }
 }

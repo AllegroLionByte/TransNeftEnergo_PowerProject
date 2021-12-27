@@ -1,20 +1,12 @@
 ﻿using System;
-using TNEPowerProject.Contract.Enums;
 
 namespace TNEPowerProject.Contract.DTO.Transformers
 {
     /// <summary>
-    /// Представляет DTO для описания создаваемого трансформатора напряжения
+    /// Представляет DTO для создания нового трансформатора напряжения
     /// </summary>
-    public class CreateVoltageTransformerDTO : TNERestfulBaseDTO
+    public class CreateVoltageTransformerDTO
     {
-        /// <summary>
-        /// Представляет DTO для описания создаваемого трансформатора напряжения
-        /// </summary>
-        /// <param name="responseCode">
-        /// Статус операции из перечисления TNEPowerProject.Contract.Enums.RestResponseCode
-        /// </param>
-        public CreateVoltageTransformerDTO(RestResponseCode responseCode) : base(responseCode) { }
         /// <summary>
         /// Номер трансформатора напряжения
         /// </summary>
