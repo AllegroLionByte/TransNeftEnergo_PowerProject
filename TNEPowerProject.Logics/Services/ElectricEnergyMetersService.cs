@@ -7,7 +7,6 @@ using TNEPowerProject.Infrastructure.Repository;
 using TNEPowerProject.Logics.Interfaces.Services;
 using TNEPowerProject.Infrastructure.Database.EFCore;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeters;
-using System.Collections.Generic;
 
 namespace TNEPowerProject.Logics.Services
 {
