@@ -74,7 +74,7 @@ namespace TNEPowerProject.Logics.Services
         {
             return new ElectricEnergyMeterTypesListDTO(RestResponseCode.OK)
             {
-                TransformerTypes = (await electricEnergyMeterTypesRepository.GetAll()).Select(x => new ElectricEnergyMeterTypesListDTO.ElectricEnergyMeterTypeListItemDTO()
+                ElectricEnergyMeterTypes = (await electricEnergyMeterTypesRepository.GetAll()).Select(x => new ElectricEnergyMeterTypesListDTO.ElectricEnergyMeterTypeListItemDTO()
                 {
                     Id = x.Id,
                     Description = x.Description

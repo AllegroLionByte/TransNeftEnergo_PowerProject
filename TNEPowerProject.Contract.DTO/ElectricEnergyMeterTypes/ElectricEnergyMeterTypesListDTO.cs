@@ -26,12 +26,12 @@ namespace TNEPowerProject.Contract.DTO.ElectricEnergyMeterTypes
         /// </param>
         public ElectricEnergyMeterTypesListDTO(RestResponseCode responseCode, string message) : base(responseCode, message)
         {
-            TransformerTypes = new List<ElectricEnergyMeterTypeListItemDTO>();
+            ElectricEnergyMeterTypes = new List<ElectricEnergyMeterTypeListItemDTO>();
         }
         /// <summary>
         /// Список типов счётчиков электрической энергии
         /// </summary>
-        public ICollection<ElectricEnergyMeterTypeListItemDTO> TransformerTypes { get; set; }
+        public ICollection<ElectricEnergyMeterTypeListItemDTO> ElectricEnergyMeterTypes { get; set; }
         /// <summary>
         /// DTO элемент списка для типов счётчиков электрической энергии
         /// </summary>
