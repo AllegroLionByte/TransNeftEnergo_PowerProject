@@ -111,7 +111,7 @@ namespace TNEPowerProject.Infrastructure.Repository
             }
         }
         /// <summary>
-        /// Позволяет добавить новый объект
+        /// Позволяет получить объект по его Id
         /// </summary>
         public virtual async Task<T> GetById(int id)
         {
