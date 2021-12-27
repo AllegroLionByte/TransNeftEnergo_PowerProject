@@ -80,7 +80,7 @@ namespace TNEPowerProject.Logics.Services
                     EEMeterTypeId = createEEMResult.EEMeterTypeId,
                     VerificationDate = createEEMResult.VerificationDate,
                     VerificationPeriod = createEEMResult.VerificationPeriod,
-                    EEMeterTypeDescription = createEEMResult.EEMeterType?.Description ?? "N/A"
+                    EEMeterTypeDescription = eEMType.Description
                 };
             }
         }
