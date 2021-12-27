@@ -16,6 +16,16 @@ namespace TNEPowerProject.Contract.DTO.Transformers
         /// </param>
         public CurrentTransformerDTO(RestResponseCode responseCode) : base(responseCode) { }
         /// <summary>
+        /// Представляет DTO для описания трансформатора тока
+        /// </summary>
+        /// <param name="responseCode">
+        /// Статус операции из перечисления TNEPowerProject.Contract.Enums.RestResponseCode
+        /// </param>
+        /// <param name="message">
+        /// Сообщение о статусе операции
+        /// </param>
+        public CurrentTransformerDTO(RestResponseCode responseCode, string message) : base(responseCode, message) { }
+        /// <summary>
         /// Уникальный идентификатор трансформатора тока
         /// </summary>
         public int Id { get; set; }
