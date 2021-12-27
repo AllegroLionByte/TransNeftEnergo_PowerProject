@@ -31,6 +31,8 @@ namespace TNEPowerProject.WebAPI
             services.AddScoped<ITransformerTypesService, TransformerTypesService>();
             services.AddScoped<IElectricEnergyMeterTypesService, ElectricEnergyMeterTypesService>();
             services.AddScoped<IElectricEnergyMetersService, ElectricEnergyMetersService>();
+            services.AddScoped<ICurrentTransformersService, CurrentTransformersService>();
+            services.AddScoped<IVoltageTransformersService, VoltageTransformersService>();
 
             services.AddControllers();
 
