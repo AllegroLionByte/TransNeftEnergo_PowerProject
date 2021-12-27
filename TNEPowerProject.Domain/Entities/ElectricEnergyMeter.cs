@@ -12,7 +12,7 @@ namespace TNEPowerProject.Domain.Entities
         /// <summary>
         /// Номер счётчика электрической энергии
         /// </summary>
-        public int Number { get; set; }
+        public long Number { get; set; }
         /// <summary>
         /// Дата последней поверки
         /// </summary>

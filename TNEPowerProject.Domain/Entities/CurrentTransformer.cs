@@ -11,7 +11,7 @@ namespace TNEPowerProject.Domain.Entities
         /// <summary>
         /// Номер трансформатора тока
         /// </summary>
-        public int Number { get; set; }
+        public long Number { get; set; }
         /// <summary>
         /// КТТ - коэфициент трансформации по току
         /// </summary>
