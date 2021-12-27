@@ -18,7 +18,7 @@ namespace TNEPowerProject.Contract.DTO.Transformers
         /// <summary>
         /// Номер трансформатора тока
         /// </summary>
-        public int Number { get; set; }
+        public long Number { get; set; }
         /// <summary>
         /// КТТ - коэфициент трансформации по току
         /// </summary>
