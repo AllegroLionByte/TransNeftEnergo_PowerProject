@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Refit;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeterTypes;
 
@@ -21,6 +22,7 @@ namespace TNEPowerProject.Contract.Interfaces
         /// Метод для получения списка всех типов счётчиков электрической энергии
         /// </summary>
         [HttpGet("list")]
+        [Get("/api/electricenergymetertypes/list")]
         Task<ElectricEnergyMeterTypesListDTO> GetAll();
         /// <summary>
         /// Метод для проверки существования типа счётчика электрической энергии с указанным Id
