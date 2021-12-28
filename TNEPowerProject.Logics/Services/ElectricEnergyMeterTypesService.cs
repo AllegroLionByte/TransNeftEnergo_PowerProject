@@ -7,6 +7,7 @@ using TNEPowerProject.Infrastructure.Repository;
 using TNEPowerProject.Logics.Interfaces.Services;
 using TNEPowerProject.Infrastructure.Database.EFCore;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeterTypes;
+using TNEPowerProject.Contract.DTO;
 
 namespace TNEPowerProject.Logics.Services
 {
@@ -30,11 +31,11 @@ namespace TNEPowerProject.Logics.Services
         /// <summary>
         /// Позволяет добавить новый тип счётчика электрической энергии
         /// </summary>
-        public async Task<ElectricEnergyMeterTypeDTO> CreateElectricEnergyMeterType(CreateElectricEnergyMeterTypeDTO createElectricEnergyMeterTypeDTO)
+        public async Task<TNEBaseDTO<ElectricEnergyMeterTypeDTO>> CreateElectricEnergyMeterType(CreateElectricEnergyMeterTypeDTO createElectricEnergyMeterTypeDTO)
         {
             if (string.IsNullOrWhiteSpace(createElectricEnergyMeterTypeDTO.Description))
             {
-                return new ElectricEnergyMeterTypeDTO(RestResponseCode.BadRequest, "Не указано описание (название) типа счётчика электрической энергии.");
+                return new TNEBaseDTO<ElectricEnergyMeterTypeDTO>(RestResponseCode.BadRequest, "Не указано описание (название) типа счётчика электрической энергии.");
             }
             ElectricEnergyMeterType createEEMTResult = await electricEnergyMeterTypesRepository.Add(new ElectricEnergyMeterType()
             {
@@ -42,14 +43,17 @@ namespace TNEPowerProject.Logics.Services
             });
             if (createEEMTResult == null)
             {
-                return new ElectricEnergyMeterTypeDTO(RestResponseCode.InternalServerError, "Произошла ошибка при попытке добавления нового типа счётчика электрической энергии.");
+                return new TNEBaseDTO<ElectricEnergyMeterTypeDTO>(RestResponseCode.InternalServerError, "Произошла ошибка при попытке добавления нового типа счётчика электрической энергии.");
             }
             else
             {
-                return new ElectricEnergyMeterTypeDTO(RestResponseCode.Created)
+                return new TNEBaseDTO<ElectricEnergyMeterTypeDTO>(RestResponseCode.Created)
                 {
-                    Id = createEEMTResult.Id,
-                    Description = createEEMTResult.Description
+                    Result = new ElectricEnergyMeterTypeDTO()
+                    {
+                        Id = createEEMTResult.Id,
+                        Description = createEEMTResult.Description
+                    }
                 };
             }
         }
@@ -59,25 +63,31 @@ namespace TNEPowerProject.Logics.Services
         /// <param name="electricEnergyMeterTypeId">
         /// Id типа счётчика электрической энергии
         /// </param>
-        public async Task<ElectricEnergyMeterTypeExistenceDTO> CheckElectricEnergyMeterTypeExists(int electricEnergyMeterTypeId)
+        public async Task<TNEBaseDTO<ElectricEnergyMeterTypeExistenceDTO>> CheckElectricEnergyMeterTypeExists(int electricEnergyMeterTypeId)
         {
-            return new ElectricEnergyMeterTypeExistenceDTO(RestResponseCode.OK)
+            return new TNEBaseDTO<ElectricEnergyMeterTypeExistenceDTO>(RestResponseCode.OK)
             {
-                Exists = await electricEnergyMeterTypesRepository.Exists(x => x.Id == electricEnergyMeterTypeId)
+                Result = new ElectricEnergyMeterTypeExistenceDTO()
+                {
+                    Exists = await electricEnergyMeterTypesRepository.Exists(x => x.Id == electricEnergyMeterTypeId)
+                }
             };
         }
         /// <summary>
         /// Позволяет получить список всех типов счётчиков электрической энергии
         /// </summary>
-        public async Task<ElectricEnergyMeterTypesListDTO> GetAllElectricEnergyMeterTypes()
+        public async Task<TNEBaseDTO<ElectricEnergyMeterTypesListDTO>> GetAllElectricEnergyMeterTypes()
         {
-            return new ElectricEnergyMeterTypesListDTO(RestResponseCode.OK)
+            return new TNEBaseDTO<ElectricEnergyMeterTypesListDTO>(RestResponseCode.OK)
             {
-                ElectricEnergyMeterTypes = (await electricEnergyMeterTypesRepository.GetAll()).Select(x => new ElectricEnergyMeterTypesListDTO.ElectricEnergyMeterTypeListItemDTO()
+                Result = new ElectricEnergyMeterTypesListDTO()
                 {
-                    Id = x.Id,
-                    Description = x.Description
-                }).ToList()
+                    ElectricEnergyMeterTypes = (await electricEnergyMeterTypesRepository.GetAll()).Select(x => new ElectricEnergyMeterTypesListDTO.ElectricEnergyMeterTypeListItemDTO()
+                    {
+                        Id = x.Id,
+                        Description = x.Description
+                    }).ToList()
+                }
             };
         }
     }

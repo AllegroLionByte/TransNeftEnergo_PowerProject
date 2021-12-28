@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TNEPowerProject.Domain.Entities;
 using TNEPowerProject.Contract.Enums;
@@ -7,6 +6,7 @@ using TNEPowerProject.Infrastructure.Repository;
 using TNEPowerProject.Logics.Interfaces.Services;
 using TNEPowerProject.Contract.DTO.Transformers;
 using TNEPowerProject.Infrastructure.Database.EFCore;
+using TNEPowerProject.Contract.DTO;
 
 namespace TNEPowerProject.Logics.Services
 {
@@ -35,38 +35,41 @@ namespace TNEPowerProject.Logics.Services
         /// <param name="voltageTransformerId">
         /// Id трансформатора напряжения
         /// </param>
-        public async Task<VoltageTransformerExistenceDTO> CheckVoltageTransformerExists(int voltageTransformerId)
+        public async Task<TNEBaseDTO<VoltageTransformerExistenceDTO>> CheckVoltageTransformerExists(int voltageTransformerId)
         {
-            return new VoltageTransformerExistenceDTO(RestResponseCode.OK)
+            return new TNEBaseDTO<VoltageTransformerExistenceDTO>(RestResponseCode.OK)
             {
-                Exists = await voltageTransformersRepository.Exists(x => x.Id == voltageTransformerId)
+                Result = new VoltageTransformerExistenceDTO()
+                {
+                    Exists = await voltageTransformersRepository.Exists(x => x.Id == voltageTransformerId)
+                }
             };
         }
         /// <summary>
         /// Позволяет добавить новый трансформатор напряжения
         /// </summary>
-        public async Task<VoltageTransformerDTO> CreateVoltageTransformer(CreateVoltageTransformerDTO createVoltageTransformerDTO)
+        public async Task<TNEBaseDTO<VoltageTransformerDTO>> CreateVoltageTransformer(CreateVoltageTransformerDTO createVoltageTransformerDTO)
         {
             if (createVoltageTransformerDTO.Number < 0)
             {
-                return new VoltageTransformerDTO(RestResponseCode.BadRequest, "Неправильно указан номер трансформатора.");
+                return new TNEBaseDTO<VoltageTransformerDTO>(RestResponseCode.BadRequest, "Неправильно указан номер трансформатора.");
             }
             if (createVoltageTransformerDTO.TransformationRatio <= 0)
             {
-                return new VoltageTransformerDTO(RestResponseCode.BadRequest, "Неправильно указан коэфициент трансформации по напряжению.");
+                return new TNEBaseDTO<VoltageTransformerDTO>(RestResponseCode.BadRequest, "Неправильно указан коэфициент трансформации по напряжению.");
             }
             else if (createVoltageTransformerDTO.VerificationDate > createVoltageTransformerDTO.VerificationPeriod)
             {
-                return new VoltageTransformerDTO(RestResponseCode.BadRequest, "Срок поверки не может находится после даты поверки.");
+                return new TNEBaseDTO<VoltageTransformerDTO>(RestResponseCode.BadRequest, "Срок поверки не может находится после даты поверки.");
             }
             TransformerType transformerType = await transformerTypesRepository.GetById(createVoltageTransformerDTO.TransformerTypeId);
             if (transformerType == null)
             {
-                return new VoltageTransformerDTO(RestResponseCode.BadRequest, "Указаный тип трансформатора не найден, либо не правильно указан его Id.");
+                return new TNEBaseDTO<VoltageTransformerDTO>(RestResponseCode.BadRequest, "Указаный тип трансформатора не найден, либо не правильно указан его Id.");
             }
             else if (transformerType.Purpose != TransformerType.TransformerPurpose.Voltage)
             {
-                return new VoltageTransformerDTO(RestResponseCode.BadRequest, "Указаный тип трансформатора не относится к трансформаторам напряжения.");
+                return new TNEBaseDTO<VoltageTransformerDTO>(RestResponseCode.BadRequest, "Указаный тип трансформатора не относится к трансформаторам напряжения.");
             }
             VoltageTransformer createVTransformer = await voltageTransformersRepository.Add(new VoltageTransformer()
             {
@@ -78,19 +81,22 @@ namespace TNEPowerProject.Logics.Services
             });
             if (createVTransformer == null)
             {
-                return new VoltageTransformerDTO(RestResponseCode.InternalServerError, "Произошла ошибка при попытке добавления нового трансформатора напряжения.");
+                return new TNEBaseDTO<VoltageTransformerDTO>(RestResponseCode.InternalServerError, "Произошла ошибка при попытке добавления нового трансформатора напряжения.");
             }
             else
             {
-                return new VoltageTransformerDTO(RestResponseCode.Created)
+                return new TNEBaseDTO<VoltageTransformerDTO>(RestResponseCode.Created)
                 {
-                    Id = createVTransformer.Id,
-                    Number = createVTransformer.Number,
-                    TransformationRatio = createVTransformer.TransformationRatio,
-                    TransformerTypeId = createVTransformer.TransformerTypeId,
-                    TransformerTypeDescription = transformerType.Description,
-                    VerificationDate = createVTransformer.VerificationDate,
-                    VerificationPeriod = createVTransformer.VerificationPeriod
+                    Result = new VoltageTransformerDTO()
+                    {
+                        Id = createVTransformer.Id,
+                        Number = createVTransformer.Number,
+                        TransformationRatio = createVTransformer.TransformationRatio,
+                        TransformerTypeId = createVTransformer.TransformerTypeId,
+                        TransformerTypeDescription = transformerType.Description,
+                        VerificationDate = createVTransformer.VerificationDate,
+                        VerificationPeriod = createVTransformer.VerificationPeriod
+                    }
                 };
             }
         }

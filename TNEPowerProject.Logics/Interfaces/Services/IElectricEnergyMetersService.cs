@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using TNEPowerProject.Contract.DTO;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeters;
 
 namespace TNEPowerProject.Logics.Interfaces.Services
@@ -11,17 +12,17 @@ namespace TNEPowerProject.Logics.Interfaces.Services
         /// <summary>
         /// Позволяет добавить новый счётчик электрической энергии
         /// </summary>
-        Task<ElectricEnergyMeterDTO> CreateElectricEnergyMeter(CreateElectricEnergyMeterDTO createElectricEnergyMeterDTO);
+        Task<TNEBaseDTO<ElectricEnergyMeterDTO>> CreateElectricEnergyMeter(CreateElectricEnergyMeterDTO createElectricEnergyMeterDTO);
         /// <summary>
         /// Позволяет получить список всех счётчиков электрической энергии
         /// </summary>
-        Task<ElectricEnergyMetersListDTO> GetAllElectricEnergyMeters();
+        Task<TNEBaseDTO<ElectricEnergyMetersListDTO>> GetAllElectricEnergyMeters();
         /// <summary>
         /// Позволяет проверить существование счётчика электрической энергии с указанным Id
         /// </summary>
         /// <param name="electricEnergyMeterId">
         /// Id счётчика электрической энергии
         /// </param>
-        Task<ElectricEnergyMeterExistenceDTO> CheckElectricEnergyMeterExists(int electricEnergyMeterId);
+        Task<TNEBaseDTO<ElectricEnergyMeterExistenceDTO>> CheckElectricEnergyMeterExists(int electricEnergyMeterId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using TNEPowerProject.Contract.DTO;
 using TNEPowerProject.Contract.DTO.Transformers;
 
 namespace TNEPowerProject.Logics.Interfaces.Services
@@ -11,17 +12,17 @@ namespace TNEPowerProject.Logics.Interfaces.Services
         /// <summary>
         /// Позволяет добавить новый тип трансформатора
         /// </summary>
-        Task<TransformerTypeDTO> CreateTransformerType(CreateTransformerTypeDTO createTransformerTypeDTO);
+        Task<TNEBaseDTO<TransformerTypeDTO>> CreateTransformerType(CreateTransformerTypeDTO createTransformerTypeDTO);
         /// <summary>
         /// Позволяет получить список всех типов трансформаторов
         /// </summary>
-        Task<TransformerTypesListDTO> GetAllTransformerTypes();
+        Task<TNEBaseDTO<TransformerTypesListDTO>> GetAllTransformerTypes();
         /// <summary>
         /// Позволяет проверить существование типа трансформатора с указанным Id
         /// </summary>
         /// <param name="transformerTypeId">
         /// Id типа трансформатора
         /// </param>
-        Task<TransformerTypeExistenceDTO> CheckTransformerTypeExists(int transformerTypeId);
+        Task<TNEBaseDTO<TransformerTypeExistenceDTO>> CheckTransformerTypeExists(int transformerTypeId);
     }
 }

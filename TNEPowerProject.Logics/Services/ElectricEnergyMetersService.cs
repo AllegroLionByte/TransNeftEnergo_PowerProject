@@ -7,6 +7,7 @@ using TNEPowerProject.Infrastructure.Repository;
 using TNEPowerProject.Logics.Interfaces.Services;
 using TNEPowerProject.Infrastructure.Database.EFCore;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeters;
+using TNEPowerProject.Contract.DTO;
 
 namespace TNEPowerProject.Logics.Services
 {
@@ -35,30 +36,33 @@ namespace TNEPowerProject.Logics.Services
         /// <param name="electricEnergyMeterId">
         /// Id счётчика электрической энергии
         /// </param>
-        public async Task<ElectricEnergyMeterExistenceDTO> CheckElectricEnergyMeterExists(int electricEnergyMeterId)
+        public async Task<TNEBaseDTO<ElectricEnergyMeterExistenceDTO>> CheckElectricEnergyMeterExists(int electricEnergyMeterId)
         {
-            return new ElectricEnergyMeterExistenceDTO(RestResponseCode.OK)
+            return new TNEBaseDTO<ElectricEnergyMeterExistenceDTO>(RestResponseCode.OK)
             {
-                Exists = await electricEnergyMetersRepository.Exists(x => x.Id == electricEnergyMeterId)
+                Result = new ElectricEnergyMeterExistenceDTO()
+                {
+                    Exists = await electricEnergyMetersRepository.Exists(x => x.Id == electricEnergyMeterId)
+                }
             };
         }
         /// <summary>
         /// Позволяет добавить новый счётчик электрической энергии
         /// </summary>
-        public async Task<ElectricEnergyMeterDTO> CreateElectricEnergyMeter(CreateElectricEnergyMeterDTO createElectricEnergyMeterDTO)
+        public async Task<TNEBaseDTO<ElectricEnergyMeterDTO>> CreateElectricEnergyMeter(CreateElectricEnergyMeterDTO createElectricEnergyMeterDTO)
         {
             if (createElectricEnergyMeterDTO.Number < 0)
             {
-                return new ElectricEnergyMeterDTO(RestResponseCode.BadRequest, "Неправильно указан номер счётчика.");
+                return new TNEBaseDTO<ElectricEnergyMeterDTO>(RestResponseCode.BadRequest, "Неправильно указан номер счётчика.");
             }
             else if (createElectricEnergyMeterDTO.VerificationDate > createElectricEnergyMeterDTO.VerificationPeriod)
             {
-                return new ElectricEnergyMeterDTO(RestResponseCode.BadRequest, "Срок поверки не может находится после даты поверки.");
+                return new TNEBaseDTO<ElectricEnergyMeterDTO>(RestResponseCode.BadRequest, "Срок поверки не может находится после даты поверки.");
             }
             ElectricEnergyMeterType eEMType = await electricEnergyMeterTypesRepository.GetById(createElectricEnergyMeterDTO.EEMeterTypeId);
             if (eEMType == null)
             {
-                return new ElectricEnergyMeterDTO(RestResponseCode.BadRequest, "Указаный тип счётчика электрической энергии не найден, либо не правильно указан его Id.");
+                return new TNEBaseDTO<ElectricEnergyMeterDTO>(RestResponseCode.BadRequest, "Указаный тип счётчика электрической энергии не найден, либо не правильно указан его Id.");
             }
             ElectricEnergyMeter createEEMResult = await electricEnergyMetersRepository.Add(new ElectricEnergyMeter()
             {
@@ -69,37 +73,43 @@ namespace TNEPowerProject.Logics.Services
             });
             if (createEEMResult == null)
             {
-                return new ElectricEnergyMeterDTO(RestResponseCode.InternalServerError, "Произошла ошибка при попытке добавления нового счётчика электрической энергии.");
+                return new TNEBaseDTO<ElectricEnergyMeterDTO>(RestResponseCode.InternalServerError, "Произошла ошибка при попытке добавления нового счётчика электрической энергии.");
             }
             else
             {
-                return new ElectricEnergyMeterDTO(RestResponseCode.Created)
+                return new TNEBaseDTO<ElectricEnergyMeterDTO>(RestResponseCode.Created)
                 {
-                    Id = createEEMResult.Id,
-                    Number = createEEMResult.Number,
-                    EEMeterTypeId = createEEMResult.EEMeterTypeId,
-                    VerificationDate = createEEMResult.VerificationDate,
-                    VerificationPeriod = createEEMResult.VerificationPeriod,
-                    EEMeterTypeDescription = eEMType.Description
+                    Result = new ElectricEnergyMeterDTO()
+                    {
+                        Id = createEEMResult.Id,
+                        Number = createEEMResult.Number,
+                        EEMeterTypeId = createEEMResult.EEMeterTypeId,
+                        VerificationDate = createEEMResult.VerificationDate,
+                        VerificationPeriod = createEEMResult.VerificationPeriod,
+                        EEMeterTypeDescription = eEMType.Description
+                    }
                 };
             }
         }
         /// <summary>
         /// Позволяет получить список всех счётчиков электрической энергии
         /// </summary>
-        public async Task<ElectricEnergyMetersListDTO> GetAllElectricEnergyMeters()
+        public async Task<TNEBaseDTO<ElectricEnergyMetersListDTO>> GetAllElectricEnergyMeters()
         {
-            return new ElectricEnergyMetersListDTO(RestResponseCode.OK)
+            return new TNEBaseDTO<ElectricEnergyMetersListDTO>(RestResponseCode.OK)
             {
-                ElectricEnergyMeters = (await electricEnergyMetersRepository.GetAll()).Select(x => new ElectricEnergyMetersListDTO.ElectricEnergyMeterListItemDTO()
+                Result = new ElectricEnergyMetersListDTO()
                 {
-                    Id = x.Id,
-                    Number = x.Number,
-                    VerificationDate = x.VerificationDate,
-                    VerificationPeriod = x.VerificationPeriod,
-                    EEMeterTypeId = x.EEMeterTypeId,
-                    EEMeterTypeDescription = x.EEMeterType?.Description ?? "N/A"
-                }).ToList()
+                    ElectricEnergyMeters = (await electricEnergyMetersRepository.GetAll()).Select(x => new ElectricEnergyMetersListDTO.ElectricEnergyMeterListItemDTO()
+                    {
+                        Id = x.Id,
+                        Number = x.Number,
+                        VerificationDate = x.VerificationDate,
+                        VerificationPeriod = x.VerificationPeriod,
+                        EEMeterTypeId = x.EEMeterTypeId,
+                        EEMeterTypeDescription = x.EEMeterType?.Description ?? "N/A"
+                    }).ToList()
+                }
             };
         }
     }

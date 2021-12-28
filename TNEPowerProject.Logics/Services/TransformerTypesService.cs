@@ -8,6 +8,7 @@ using TNEPowerProject.Infrastructure.Repository;
 using TNEPowerProject.Logics.Interfaces.Services;
 using TNEPowerProject.Contract.DTO.Transformers;
 using TNEPowerProject.Infrastructure.Database.EFCore;
+using TNEPowerProject.Contract.DTO;
 
 namespace TNEPowerProject.Logics.Services
 {
@@ -32,15 +33,15 @@ namespace TNEPowerProject.Logics.Services
         /// Позволяет добавить новый тип трансформатора
         /// </summary>
         /// <param name="createTransformerTypeDTO">Сущность, описывающая новый тип трансформатора</param>
-        public async Task<TransformerTypeDTO> CreateTransformerType(CreateTransformerTypeDTO createTransformerTypeDTO)
+        public async Task<TNEBaseDTO<TransformerTypeDTO>> CreateTransformerType(CreateTransformerTypeDTO createTransformerTypeDTO)
         {
             if (string.IsNullOrWhiteSpace(createTransformerTypeDTO.Description))
             {
-                return new TransformerTypeDTO(RestResponseCode.BadRequest, "Не указано описание (название) типа трансформатора.");
+                return new TNEBaseDTO<TransformerTypeDTO>(RestResponseCode.BadRequest, "Не указано описание (название) типа трансформатора.");
             }
             else if (!Enum.IsDefined(typeof(TransformerType.TransformerPurpose), createTransformerTypeDTO.TransformerPurpose))
             {
-                return new TransformerTypeDTO(RestResponseCode.BadRequest, "Указан неправильный род работы трансформатора.");
+                return new TNEBaseDTO<TransformerTypeDTO>(RestResponseCode.BadRequest, "Указан неправильный род работы трансформатора.");
             }
             TransformerType createTTResult = await transformerTypesRepository.Add(new TransformerType()
             {
@@ -49,15 +50,18 @@ namespace TNEPowerProject.Logics.Services
             });
             if (createTTResult == null)
             {
-                return new TransformerTypeDTO(RestResponseCode.InternalServerError, "Произошла ошибка при попытке добавления нового типа трансформатора.");
+                return new TNEBaseDTO<TransformerTypeDTO>(RestResponseCode.InternalServerError, "Произошла ошибка при попытке добавления нового типа трансформатора.");
             }
             else
             {
-                return new TransformerTypeDTO(RestResponseCode.Created)
+                return new TNEBaseDTO<TransformerTypeDTO>(RestResponseCode.Created)
                 {
-                    Description = createTTResult.Description,
-                    Id = createTTResult.Id,
-                    TransformerPurpose = (int)createTTResult.Purpose
+                    Result = new TransformerTypeDTO()
+                    {
+                        Description = createTTResult.Description,
+                        Id = createTTResult.Id,
+                        TransformerPurpose = (int)createTTResult.Purpose
+                    }
                 };
             }
         }
@@ -67,26 +71,32 @@ namespace TNEPowerProject.Logics.Services
         /// <param name="transformerTypeId">
         /// Id типа трансформатора
         /// </param>
-        public async Task<TransformerTypeExistenceDTO> CheckTransformerTypeExists(int transformerTypeId)
+        public async Task<TNEBaseDTO<TransformerTypeExistenceDTO>> CheckTransformerTypeExists(int transformerTypeId)
         {
-            return new TransformerTypeExistenceDTO(RestResponseCode.OK)
+            return new TNEBaseDTO<TransformerTypeExistenceDTO>(RestResponseCode.OK)
             {
-                Exists = await transformerTypesRepository.Exists(x => x.Id == transformerTypeId)
+                Result = new TransformerTypeExistenceDTO()
+                {
+                    Exists = await transformerTypesRepository.Exists(x => x.Id == transformerTypeId)
+                }
             };
         }
         /// <summary>
         /// Позволяет получить список всех типов трансформаторов
         /// </summary>
-        public async Task<TransformerTypesListDTO> GetAllTransformerTypes()
+        public async Task<TNEBaseDTO<TransformerTypesListDTO>> GetAllTransformerTypes()
         {
-            return new TransformerTypesListDTO(RestResponseCode.OK)
+            return new TNEBaseDTO<TransformerTypesListDTO>(RestResponseCode.OK)
             {
-                TransformerTypes = (await transformerTypesRepository.GetAll()).Select(x => new TransformerTypesListDTO.TransformerTypeListItemDTO()
+                Result = new TransformerTypesListDTO()
                 {
-                    Id = x.Id,
-                    Description = x.Description,
-                    TransformerPurpose = (int)x.Purpose
-                }).ToList()
+                    TransformerTypes = (await transformerTypesRepository.GetAll()).Select(x => new TransformerTypesListDTO.TransformerTypeListItemDTO()
+                    {
+                        Id = x.Id,
+                        Description = x.Description,
+                        TransformerPurpose = (int)x.Purpose
+                    }).ToList()
+                }
             };
         }
     }
