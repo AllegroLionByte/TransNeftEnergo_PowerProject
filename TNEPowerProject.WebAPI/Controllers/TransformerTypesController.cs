@@ -3,6 +3,7 @@ using TNEPowerProject.Contract.Interfaces;
 using System.Threading.Tasks;
 using TNEPowerProject.Contract.DTO.Transformers;
 using TNEPowerProject.Logics.Interfaces.Services;
+using TNEPowerProject.Contract.DTO;
 
 namespace TNEPowerProject.WebAPI.Controllers
 {
@@ -17,17 +18,17 @@ namespace TNEPowerProject.WebAPI.Controllers
             this.transformerTypesService = transformerTypesService;
         }
         [HttpPost]
-        public async Task<TransformerTypeDTO> CreateTransformerType(CreateTransformerTypeDTO createTransformerTypeDTO)
+        public async Task<TNEBaseDTO<TransformerTypeDTO>> CreateTransformerType(CreateTransformerTypeDTO createTransformerTypeDTO)
         {
             return await transformerTypesService.CreateTransformerType(createTransformerTypeDTO);
         }
         [HttpGet("exists")]
-        public async Task<TransformerTypeExistenceDTO> CheckTransformerTypeExists(int transformerTypeId)
+        public async Task<TNEBaseDTO<TransformerTypeExistenceDTO>> CheckTransformerTypeExists(int transformerTypeId)
         {
             return await transformerTypesService.CheckTransformerTypeExists(transformerTypeId);
         }
         [HttpGet("list")]
-        public async Task<TransformerTypesListDTO> GetAll()
+        public async Task<TNEBaseDTO<TransformerTypesListDTO>> GetAll()
         {
             return await transformerTypesService.GetAllTransformerTypes();
         }

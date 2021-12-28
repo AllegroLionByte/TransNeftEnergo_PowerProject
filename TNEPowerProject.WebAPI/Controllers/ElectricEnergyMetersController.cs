@@ -4,6 +4,7 @@ using TNEPowerProject.Contract.Interfaces;
 using TNEPowerProject.Logics.Interfaces.Services;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeters;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeterTypes;
+using TNEPowerProject.Contract.DTO;
 
 namespace TNEPowerProject.WebAPI.Controllers
 {
@@ -17,17 +18,17 @@ namespace TNEPowerProject.WebAPI.Controllers
             this.electricEnergyMetersService = electricEnergyMetersService;
         }
         [HttpGet("exists")]
-        public async Task<ElectricEnergyMeterExistenceDTO> CheckElectricEnergyMeterExists(int electricEnergyMeterId)
+        public async Task<TNEBaseDTO<ElectricEnergyMeterExistenceDTO>> CheckElectricEnergyMeterExists(int electricEnergyMeterId)
         {
             return await electricEnergyMetersService.CheckElectricEnergyMeterExists(electricEnergyMeterId);
         }
         [HttpPost]
-        public async Task<ElectricEnergyMeterDTO> CreateElectricEnergyMeter(CreateElectricEnergyMeterDTO createElectricEnergyMeterDTO)
+        public async Task<TNEBaseDTO<ElectricEnergyMeterDTO>> CreateElectricEnergyMeter(CreateElectricEnergyMeterDTO createElectricEnergyMeterDTO)
         {
             return await electricEnergyMetersService.CreateElectricEnergyMeter(createElectricEnergyMeterDTO);
         }
         [HttpGet("list")]
-        public async Task<ElectricEnergyMetersListDTO> GetAll()
+        public async Task<TNEBaseDTO<ElectricEnergyMetersListDTO>> GetAll()
         {
             return await electricEnergyMetersService.GetAllElectricEnergyMeters();
         }
