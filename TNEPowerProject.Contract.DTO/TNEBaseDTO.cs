@@ -1,27 +1,45 @@
-﻿using TNEPowerProject.Contract.Enums;
+﻿using Newtonsoft.Json;
+using TNEPowerProject.Contract.Enums;
 
 namespace TNEPowerProject.Contract.DTO
 {
     /// <summary>
     /// Базовый класс для формирования ответа от REST API
     /// </summary>
-    public abstract class TNERestfulBaseDTO
+    public class TNEBaseDTO<T> where T : ITNEDTO
     {
         /// <summary>
         /// Статус операции согласно спецификации REST API
         /// </summary>
+        [JsonProperty]
         public int StatusCode { get; private set; }
         /// <summary>
         /// Сообщение о статусе операции
         /// </summary>
+        [JsonProperty]
         public string Message { get; private set; }
+        /// <summary>
+        /// Результат выполнения операции
+        /// </summary>
+        public T Result { get; set; }
+        /// <summary>
+        /// Конструирует ответ с указанием статуса операции 200 OK и пустым сообщением.
+        /// </summary>
+        /// <remarks>
+        /// Используется при десериализации JSON
+        /// </remarks>
+        public TNEBaseDTO()
+        {
+            StatusCode = (int)RestResponseCode.OK;
+            Message = "";
+        }
         /// <summary>
         /// Конструирует ответ с указанием статуса операции
         /// </summary>
         /// <param name="statusCode">
         /// Статус операции из перечисления TNEPowerProject.Contract.Enums.RestResponseCode
         /// </param>
-        public TNERestfulBaseDTO(RestResponseCode statusCode) : this((int)statusCode, "") { }
+        public TNEBaseDTO(RestResponseCode statusCode) : this((int)statusCode, "") { }
         /// <summary>
         /// Конструирует ответ с указанием статуса операции и соответствующего сообщения
         /// </summary>
@@ -31,7 +49,7 @@ namespace TNEPowerProject.Contract.DTO
         /// <param name="message">
         /// Сообщение о статусе операции
         /// </param>
-        public TNERestfulBaseDTO(RestResponseCode statusCode, string message) : this((int)statusCode, message) { }
+        public TNEBaseDTO(RestResponseCode statusCode, string message) : this((int)statusCode, message) { }
         /// <summary>
         /// [С осторожностью]
         /// Конструирует ответ с указанием специального статуса операции
@@ -40,7 +58,7 @@ namespace TNEPowerProject.Contract.DTO
         /// <param name="statusCode">
         /// Статус операции
         /// </param>
-        public TNERestfulBaseDTO(int statusCode) : this(statusCode, "") { }
+        public TNEBaseDTO(int statusCode) : this(statusCode, "") { }
         /// <summary>
         /// [С осторожностью]
         /// Конструирует ответ с указанием специального статуса операции и соответствующего сообщения
@@ -52,7 +70,7 @@ namespace TNEPowerProject.Contract.DTO
         /// <param name="message">
         /// Сообщение о статусе операции
         /// </param>
-        public TNERestfulBaseDTO(int statusCode, string message)
+        public TNEBaseDTO(int statusCode, string message)
         {
             StatusCode = statusCode;
             Message = (string.IsNullOrWhiteSpace(message) ? "" : message);

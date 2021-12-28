@@ -1,30 +1,16 @@
 ﻿using System.Collections.Generic;
-using TNEPowerProject.Contract.Enums;
 
 namespace TNEPowerProject.Contract.DTO.Transformers
 {
     /// <summary>
     /// Представляет DTO для списка типов трансформаторов
     /// </summary>
-    public class TransformerTypesListDTO : TNERestfulBaseDTO
+    public class TransformerTypesListDTO : ITNEDTO
     {
         /// <summary>
         /// Представляет DTO для списка типов трансформаторов
         /// </summary>
-        /// <param name="responseCode">
-        /// Статус операции из перечисления TNEPowerProject.Contract.Enums.RestResponseCode
-        /// </param>
-        public TransformerTypesListDTO(RestResponseCode responseCode) : this(responseCode, "") { }
-        /// <summary>
-        /// Представляет DTO для списка типов трансформаторов
-        /// </summary>
-        /// <param name="responseCode">
-        /// Статус операции из перечисления TNEPowerProject.Contract.Enums.RestResponseCode
-        /// </param>
-        /// <param name="message">
-        /// Сообщение о статусе операции
-        /// </param>
-        public TransformerTypesListDTO(RestResponseCode responseCode, string message) : base(responseCode, message)
+        public TransformerTypesListDTO()
         {
             TransformerTypes = new List<TransformerTypeListItemDTO>();
         }

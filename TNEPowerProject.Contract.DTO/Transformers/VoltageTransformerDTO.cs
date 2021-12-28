@@ -1,30 +1,12 @@
 ﻿using System;
-using TNEPowerProject.Contract.Enums;
 
 namespace TNEPowerProject.Contract.DTO.Transformers
 {
     /// <summary>
     /// Представляет DTO для описания трансформатора напряжения
     /// </summary>
-    public class VoltageTransformerDTO : TNERestfulBaseDTO
+    public class VoltageTransformerDTO : ITNEDTO
     {
-        /// <summary>
-        /// Представляет DTO для описания трансформатора напряжения
-        /// </summary>
-        /// <param name="responseCode">
-        /// Статус операции из перечисления TNEPowerProject.Contract.Enums.RestResponseCode
-        /// </param>
-        public VoltageTransformerDTO(RestResponseCode responseCode) : base(responseCode) { }
-        /// <summary>
-        /// Представляет DTO для описания трансформатора напряжения
-        /// </summary>
-        /// <param name="responseCode">
-        /// Статус операции из перечисления TNEPowerProject.Contract.Enums.RestResponseCode
-        /// </param>
-        /// <param name="message">
-        /// Сообщение о статусе операции
-        /// </param>
-        public VoltageTransformerDTO(RestResponseCode responseCode, string message) : base(responseCode, message) { }
         /// <summary>
         /// Уникальный идентификатор трансформатора напряжения
         /// </summary>

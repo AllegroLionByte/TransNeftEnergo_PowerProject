@@ -1,31 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using TNEPowerProject.Contract.Enums;
 
 namespace TNEPowerProject.Contract.DTO.ElectricEnergyMeters
 {
     /// <summary>
     /// Представляет DTO для списка счётчиков электрической энергии
     /// </summary>
-    public class ElectricEnergyMetersListDTO : TNERestfulBaseDTO
+    public class ElectricEnergyMetersListDTO : ITNEDTO
     {
         /// <summary>
         /// Представляет DTO для списка счётчиков электрической энергии
         /// </summary>
-        /// <param name="responseCode">
-        /// Статус операции из перечисления TNEPowerProject.Contract.Enums.RestResponseCode
-        /// </param>
-        public ElectricEnergyMetersListDTO(RestResponseCode responseCode) : this(responseCode, "") { }
-        /// <summary>
-        /// Представляет DTO для списка счётчиков электрической энергии
-        /// </summary>
-        /// <param name="responseCode">
-        /// Статус операции из перечисления TNEPowerProject.Contract.Enums.RestResponseCode
-        /// </param>
-        /// <param name="message">
-        /// Сообщение о статусе операции
-        /// </param>
-        public ElectricEnergyMetersListDTO(RestResponseCode responseCode, string message) : base(responseCode, message)
+        public ElectricEnergyMetersListDTO()
         {
             ElectricEnergyMeters = new List<ElectricEnergyMeterListItemDTO>();
         }

@@ -1,29 +1,10 @@
-﻿using TNEPowerProject.Contract.Enums;
-
-namespace TNEPowerProject.Contract.DTO.Transformers
+﻿namespace TNEPowerProject.Contract.DTO.Transformers
 {
     /// <summary>
     /// Представляет DTO для описания типа трансформатора
     /// </summary>
-    public class TransformerTypeDTO : TNERestfulBaseDTO
+    public class TransformerTypeDTO : ITNEDTO
     {
-        /// <summary>
-        /// Представляет DTO для описания типа трансформатора
-        /// </summary>
-        /// <param name="responseCode">
-        /// Статус операции из перечисления TNEPowerProject.Contract.Enums.RestResponseCode
-        /// </param>
-        public TransformerTypeDTO(RestResponseCode responseCode) : base(responseCode) { }
-        /// <summary>
-        /// Представляет DTO для описания типа трансформатора
-        /// </summary>
-        /// <param name="responseCode">
-        /// Статус операции из перечисления TNEPowerProject.Contract.Enums.RestResponseCode
-        /// </param>
-        /// <param name="message">
-        /// Сообщение о статусе операции
-        /// </param>
-        public TransformerTypeDTO(RestResponseCode responseCode, string message) : base(responseCode, message) { }
         /// <summary>
         /// Уникальный идентификатор типа трансформатора
         /// </summary>
