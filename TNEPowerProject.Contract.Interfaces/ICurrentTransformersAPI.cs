@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Refit;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TNEPowerProject.Contract.DTO;
 using TNEPowerProject.Contract.DTO.Transformers;
@@ -11,20 +12,22 @@ namespace TNEPowerProject.Contract.Interfaces
     public interface ICurrentTransformersAPI
     {
         /// <summary>
+        /// Метод для проверки существования трансформатора тока с указанным Id
+        /// </summary>
+        /// <param name="currentTransformerId">
+        /// Id трансформатора тока
+        /// </param>
+        [HttpGet("{currentTransformerId}/exists")]
+        [Get("/api/currenttransformers/{currentTransformerId}/exists")]
+        Task<TNEBaseDTO<CurrentTransformerExistenceDTO>> CheckCurrentTransformerExists(int currentTransformerId);
+        /// <summary>
         /// Метод для создания нового трансформатора тока
         /// </summary>
         /// <param name="createCurrentTransformerDTO">
         /// DTO для нового трансформатора тока
         /// </param>
         [HttpPost]
-        Task<TNEBaseDTO<CurrentTransformerDTO>> CreateCurrentTransformer(CreateCurrentTransformerDTO createCurrentTransformerDTO);
-        /// <summary>
-        /// Метод для проверки существования трансформатора тока с указанным Id
-        /// </summary>
-        /// <param name="currentTransformerId">
-        /// Id трансформатора тока
-        /// </param>
-        [HttpGet("exists")]
-        Task<TNEBaseDTO<CurrentTransformerExistenceDTO>> CheckCurrentTransformerExists(int currentTransformerId);
+        [Post("/api/currenttransformers")]
+        Task<TNEBaseDTO<CurrentTransformerDTO>> CreateCurrentTransformer([Body] CreateCurrentTransformerDTO createCurrentTransformerDTO);
     }
 }

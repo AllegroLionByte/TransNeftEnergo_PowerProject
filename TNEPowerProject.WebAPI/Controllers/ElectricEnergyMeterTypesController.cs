@@ -17,17 +17,17 @@ namespace TNEPowerProject.WebAPI.Controllers
         {
             this.electricEnergyMeterTypesService = electricEnergyMeterTypesService;
         }
+        [HttpGet("{electricEnergyMeterTypeId}/exists")]
+        public async Task<TNEBaseDTO<ElectricEnergyMeterTypeExistenceDTO>> CheckElectricEnergyMeterTypeExists(int electricEnergyMeterTypeId)
+        {
+            return await electricEnergyMeterTypesService.CheckElectricEnergyMeterTypeExists(electricEnergyMeterTypeId);
+        }
         [HttpPost]
         public async Task<TNEBaseDTO<ElectricEnergyMeterTypeDTO>> CreateElectricEnergyMeterType(CreateElectricEnergyMeterTypeDTO createElectricEnergyMeterTypeDTO)
         {
             return await electricEnergyMeterTypesService.CreateElectricEnergyMeterType(createElectricEnergyMeterTypeDTO);
         }
-        [HttpGet("exists")]
-        public async Task<TNEBaseDTO<ElectricEnergyMeterTypeExistenceDTO>> CheckElectricEnergyMeterTypeExists(int electricEnergyMeterTypeId)
-        {
-            return await electricEnergyMeterTypesService.CheckElectricEnergyMeterTypeExists(electricEnergyMeterTypeId);
-        }
-        [HttpGet("list")]
+        [HttpGet]
         public async Task<TNEBaseDTO<ElectricEnergyMeterTypesListDTO>> GetAll()
         {
             return await electricEnergyMeterTypesService.GetAllElectricEnergyMeterTypes();

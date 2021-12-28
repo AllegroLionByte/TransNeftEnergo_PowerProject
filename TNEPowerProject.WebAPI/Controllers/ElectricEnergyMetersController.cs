@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using TNEPowerProject.Contract.Interfaces;
 using TNEPowerProject.Logics.Interfaces.Services;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeters;
-using TNEPowerProject.Contract.DTO.ElectricEnergyMeterTypes;
 using TNEPowerProject.Contract.DTO;
 
 namespace TNEPowerProject.WebAPI.Controllers
@@ -17,7 +16,7 @@ namespace TNEPowerProject.WebAPI.Controllers
         {
             this.electricEnergyMetersService = electricEnergyMetersService;
         }
-        [HttpGet("exists")]
+        [HttpGet("{electricEnergyMeterId}/exists")]
         public async Task<TNEBaseDTO<ElectricEnergyMeterExistenceDTO>> CheckElectricEnergyMeterExists(int electricEnergyMeterId)
         {
             return await electricEnergyMetersService.CheckElectricEnergyMeterExists(electricEnergyMeterId);
@@ -27,7 +26,7 @@ namespace TNEPowerProject.WebAPI.Controllers
         {
             return await electricEnergyMetersService.CreateElectricEnergyMeter(createElectricEnergyMeterDTO);
         }
-        [HttpGet("list")]
+        [HttpGet]
         public async Task<TNEBaseDTO<ElectricEnergyMetersListDTO>> GetAll()
         {
             return await electricEnergyMetersService.GetAllElectricEnergyMeters();

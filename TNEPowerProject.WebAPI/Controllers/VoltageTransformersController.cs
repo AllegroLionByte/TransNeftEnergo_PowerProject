@@ -1,27 +1,31 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using TNEPowerProject.Infrastructure.Database.EFCore;
+using TNEPowerProject.Contract.DTO;
 using TNEPowerProject.Contract.Interfaces;
+using TNEPowerProject.Logics.Interfaces.Services;
+using TNEPowerProject.Contract.DTO.Transformers;
 
 namespace TNEPowerProject.WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class VoltageTransformersController : ControllerBase
+    public class VoltageTransformersController : ControllerBase, IVoltageTransformersAPI
     {
-        private readonly EnergoDBContext energoContext;
+        private readonly IVoltageTransformersService voltageTransformersService;
 
-        public VoltageTransformersController(EnergoDBContext energoContext)
+        public VoltageTransformersController(IVoltageTransformersService voltageTransformersService)
         {
-            this.energoContext = energoContext;
+            this.voltageTransformersService = voltageTransformersService;
         }
-
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet("{voltageTransformerId}/exists")]
+        public async Task<TNEBaseDTO<VoltageTransformerExistenceDTO>> CheckVoltageTransformerExists(int voltageTransformerId)
         {
-            return Ok();
+            return await voltageTransformersService.CheckVoltageTransformerExists(voltageTransformerId);
         }
-
+        [HttpPost]
+        public async Task<TNEBaseDTO<VoltageTransformerDTO>> CreateVoltageTransformer(CreateVoltageTransformerDTO createVoltageTransformerDTO)
+        {
+            return await voltageTransformersService.CreateVoltageTransformer(createVoltageTransformerDTO);
+        }
     }
 }
