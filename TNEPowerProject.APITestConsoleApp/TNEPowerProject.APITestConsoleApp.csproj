@@ -5,4 +5,15 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Refit" Version="6.1.15" />
+    <PackageReference Include="Refit.Newtonsoft.Json" Version="6.1.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TNEPowerProject.Contract.DTO\TNEPowerProject.Contract.DTO.csproj" />
+    <ProjectReference Include="..\TNEPowerProject.Contract.Enums\TNEPowerProject.Contract.Enums.csproj" />
+    <ProjectReference Include="..\TNEPowerProject.Contract.Interfaces\TNEPowerProject.Contract.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>
