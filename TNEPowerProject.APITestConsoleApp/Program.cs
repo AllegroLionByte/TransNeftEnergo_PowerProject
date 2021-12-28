@@ -2,6 +2,8 @@
 using System;
 using System.Threading.Tasks;
 using TNEPowerProject.APITestConsoleApp.LLConsoleMenu;
+using TNEPowerProject.Contract.DTO;
+using TNEPowerProject.Contract.DTO.ElectricEnergyMeterTypes;
 using TNEPowerProject.Contract.Interfaces;
 
 namespace TNEPowerProject.APITestConsoleApp
@@ -24,6 +26,8 @@ namespace TNEPowerProject.APITestConsoleApp
 
 
         private static readonly LLMenu EEMeterTypesTestMenu = new LLMenu("Выберите действие для тестирования API типов счётчиков электрической энергии:")
+               .AddNewMenuEntry(new LLMenuEntry("Проверить существование типа счётчиков электрической энергии по Id", TestEEMeterTypesAPI_CheckIdExists))
+               .AddNewMenuEntry(new LLMenuEntry("Создать новый тип счётчиков электрической энергии", TestEEMeterTypesAPI_TypesList))
                .AddNewMenuEntry(new LLMenuEntry("Вывести список типов счётчиков электрической энергии", TestEEMeterTypesAPI_TypesList))
                .AppendDefaultExitItem();
 
@@ -128,11 +132,88 @@ namespace TNEPowerProject.APITestConsoleApp
             await EEMeterTypesTestMenu.DoMenuAsync();
             return true;
         }
+        private static async Task<bool> TestEEMeterTypesAPI_CheckIdExists()
+        {
+            return await DoTest(async () =>
+            {
+                Console.WriteLine("Проверить существование типа счётчиков электрической энергии по Id");
+                int eEMTypeId;
+                Console.Write("Введите Id типа счётчиков электрической энергии: ");
+                if (!int.TryParse(Console.ReadLine(), out eEMTypeId))
+                {
+                    Console.WriteLine("Неправильно введён Id!");
+                    return true;
+                }
+                Console.Write("Выполнение запроса... ");
+                TNEBaseDTO<ElectricEnergyMeterTypeExistenceDTO> result = await electricEnergyMeterTypesAPI.CheckElectricEnergyMeterTypeExists(eEMTypeId);
+                Console.WriteLine("[OK]");
+
+                if (result == null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("[FAIL]");
+                    Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                }
+                else
+                {
+                    Console.WriteLine($"Ожидаемый статус: 200. Полученный статус: {result.StatusCode} [{((result.StatusCode == 200) ? "OK" : "FAIL")}]");
+
+                    if (result.StatusCode == 200)
+                    {
+                        Console.WriteLine($"Указанный Id {((result.Result.Exists) ? "" : "не ")}существует");
+                    }
+                    else
+                        Console.WriteLine("Получен не правильный код ответа.");
+                }
+
+                return true;
+            });
+        }
+
         private static async Task<bool> TestEEMeterTypesAPI_TypesList()
         {
-            Console.Write("TEST");
-            await Task.Delay(1000);
-            return true;
+            return await DoTest(async () =>
+            {
+                Console.Write("Получение списка типов типов счётчиков электрической энергии... ");
+                TNEBaseDTO<ElectricEnergyMeterTypesListDTO> result = await electricEnergyMeterTypesAPI.GetAll();
+
+                if (result == null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("[FAIL]");
+                    Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                }
+                else
+                {
+                    Console.WriteLine("[OK]");
+                    Console.WriteLine($"Ожидаемый статус: 200. Полученный статус: {result.StatusCode} [{((result.StatusCode == 200) ? "OK" : "FAIL")}]");
+                    if (result.StatusCode == 200 && result.Result != null && result.Result.ElectricEnergyMeterTypes != null)
+                    {
+                        if (result.Result.ElectricEnergyMeterTypes.Count == 0)
+                        {
+                            Console.WriteLine($"Ответ получен правильный, однако, список пуст.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Список типов счётчиков электрической энергии:");
+                        }
+                        for (int i = 0; i < result.Result.ElectricEnergyMeterTypes.Count; i++)
+                        {
+                            ElectricEnergyMeterTypesListDTO.ElectricEnergyMeterTypeListItemDTO eEMType = result.Result.ElectricEnergyMeterTypes[i];
+                            Console.WriteLine($"{i}. Id: {eEMType.Id}, имя: {eEMType.Description}");
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                    }
+                }
+                return true;
+            });
         }
         #endregion
     }
