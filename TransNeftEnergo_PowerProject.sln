@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		assets\images\datascheme.png = assets\images\datascheme.png
 		Readme.md = Readme.md
+		RunTestApp.bat = RunTestApp.bat
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TNEPowerProject.WebAPI", "TNEPowerProject.WebAPI\TNEPowerProject.WebAPI.csproj", "{31185BFF-531A-48E2-BDAF-1BA1E7ACDF83}"
@@ -27,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TNEPowerProject.Contract.DT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TNEPowerProject.WebAPI.Test", "TNEPowerProject.WebAPI.Test\TNEPowerProject.WebAPI.Test.csproj", "{DBDDCC0C-85BD-49DC-BF46-E3A78A4C266B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TNEPowerProject.Contract.Enums", "TNEPowerProject.Contract.Enums\TNEPowerProject.Contract.Enums.csproj", "{73B3169B-09F6-4A53-9C51-543F40315028}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TNEPowerProject.Contract.Enums", "TNEPowerProject.Contract.Enums\TNEPowerProject.Contract.Enums.csproj", "{73B3169B-09F6-4A53-9C51-543F40315028}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
