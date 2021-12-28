@@ -17,7 +17,7 @@ namespace TNEPowerProject.Contract.DTO.Transformers
         /// <summary>
         /// Список типов трансформаторов
         /// </summary>
-        public ICollection<TransformerTypeListItemDTO> TransformerTypes { get; set; }
+        public IList<TransformerTypeListItemDTO> TransformerTypes { get; set; }
         /// <summary>
         /// DTO элемент списка для типов трансформаторов
         /// </summary>

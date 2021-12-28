@@ -18,7 +18,7 @@ namespace TNEPowerProject.Contract.DTO.ElectricEnergyMeters
         /// <summary>
         /// Список счётчиков электрической энергии
         /// </summary>
-        public ICollection<ElectricEnergyMeterListItemDTO> ElectricEnergyMeters { get; set; }
+        public IList<ElectricEnergyMeterListItemDTO> ElectricEnergyMeters { get; set; }
         /// <summary>
         /// DTO элемент списка для счётчиков электрической энергии
         /// </summary>
