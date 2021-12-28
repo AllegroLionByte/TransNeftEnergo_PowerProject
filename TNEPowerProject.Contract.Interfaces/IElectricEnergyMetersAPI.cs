@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TNEPowerProject.Contract.DTO;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeters;
 
 namespace TNEPowerProject.Contract.Interfaces
@@ -16,12 +17,12 @@ namespace TNEPowerProject.Contract.Interfaces
         /// DTO для нового счётчика электрической энергии
         /// </param>
         [HttpPost]
-        Task<ElectricEnergyMeterDTO> CreateElectricEnergyMeter(CreateElectricEnergyMeterDTO createElectricEnergyMeterDTO);
+        Task<TNEBaseDTO<ElectricEnergyMeterDTO>> CreateElectricEnergyMeter(CreateElectricEnergyMeterDTO createElectricEnergyMeterDTO);
         /// <summary>
         /// Метод для получения списка всех счётчиков электрической энергии
         /// </summary>
         [HttpGet("list")]
-        Task<ElectricEnergyMetersListDTO> GetAll();
+        Task<TNEBaseDTO<ElectricEnergyMetersListDTO>> GetAll();
         /// <summary>
         /// Метод для проверки существования счётчика электрической энергии с указанным Id
         /// </summary>
@@ -29,6 +30,6 @@ namespace TNEPowerProject.Contract.Interfaces
         /// Id счётчика электрической энергии
         /// </param>
         [HttpGet("exists")]
-        Task<ElectricEnergyMeterExistenceDTO> CheckElectricEnergyMeterExists(int electricEnergyMeterId);
+        Task<TNEBaseDTO<ElectricEnergyMeterExistenceDTO>> CheckElectricEnergyMeterExists(int electricEnergyMeterId);
     }
 }

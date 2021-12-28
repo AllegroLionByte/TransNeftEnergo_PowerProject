@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TNEPowerProject.Contract.DTO;
 using TNEPowerProject.Contract.DTO.Transformers;
 
 namespace TNEPowerProject.Contract.Interfaces
@@ -16,7 +17,7 @@ namespace TNEPowerProject.Contract.Interfaces
         /// DTO для нового трансформатора напряжения
         /// </param>
         [HttpPost]
-        Task<VoltageTransformerDTO> CreateVoltageTransformer(CreateVoltageTransformerDTO createVoltageTransformerDTO);
+        Task<TNEBaseDTO<VoltageTransformerDTO>> CreateVoltageTransformer(CreateVoltageTransformerDTO createVoltageTransformerDTO);
         /// <summary>
         /// Метод для проверки существования трансформатора напряжения с указанным Id
         /// </summary>
@@ -24,6 +25,6 @@ namespace TNEPowerProject.Contract.Interfaces
         /// Id трансформатора напряжения
         /// </param>
         [HttpGet("exists")]
-        Task<VoltageTransformerExistenceDTO> CheckVoltageTransformerExists(int voltageTransformerId);
+        Task<TNEBaseDTO<VoltageTransformerExistenceDTO>> CheckVoltageTransformerExists(int voltageTransformerId);
     }
 }

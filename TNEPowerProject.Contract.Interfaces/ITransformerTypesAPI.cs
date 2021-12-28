@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TNEPowerProject.Contract.DTO;
 using TNEPowerProject.Contract.DTO.Transformers;
 
 namespace TNEPowerProject.Contract.Interfaces
@@ -16,12 +17,12 @@ namespace TNEPowerProject.Contract.Interfaces
         /// DTO для нового типа трансформатора
         /// </param>
         [HttpPost]
-        Task<TransformerTypeDTO> CreateTransformerType(CreateTransformerTypeDTO createTransformerTypeDTO);
+        Task<TNEBaseDTO<TransformerTypeDTO>> CreateTransformerType(CreateTransformerTypeDTO createTransformerTypeDTO);
         /// <summary>
         /// Метод для получения списка всех типов трансформаторов
         /// </summary>
         [HttpGet("list")]
-        Task<TransformerTypesListDTO> GetAll();
+        Task<TNEBaseDTO<TransformerTypesListDTO>> GetAll();
         /// <summary>
         /// Метод для проверки существования типа трансформатора с указанным Id
         /// </summary>
@@ -29,6 +30,6 @@ namespace TNEPowerProject.Contract.Interfaces
         /// Id типа трансформатора
         /// </param>
         [HttpGet("exists")]
-        Task<TransformerTypeExistenceDTO> CheckTransformerTypeExists(int transformerTypeId);
+        Task<TNEBaseDTO<TransformerTypeExistenceDTO>> CheckTransformerTypeExists(int transformerTypeId);
     }
 }
