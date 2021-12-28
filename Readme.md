@@ -27,6 +27,7 @@ Trans Neft Energo - Power Project
 + Swashbuckle.AspNetCore **v6.2.3** - `WebAPI`;
 + Refit **6.1.15** - `APITestConsoleApp`, `Contract.Interfaces`;
 + Refit.Newtonsoft.Json **6.1.15** - `APITestConsoleApp`;
++ Newtonsoft.Json **13.0.1** - `Contract.DTO`;
 
 
 ### Ссылки на проекты
