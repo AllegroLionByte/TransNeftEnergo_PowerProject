@@ -101,7 +101,7 @@ namespace TNEPowerProject.APITestConsoleApp.LLConsoleMenu
         /// </summary>
         public async Task DoMenuAsync()
         {
-            if (this.MenuEntries.Count == 0)
+            if (MenuEntries.Count == 0)
                 throw new InvalidOperationException("В меню не добавлены элементы");
 
             bool prevCurVisible = Console.CursorVisible;
@@ -111,8 +111,8 @@ namespace TNEPowerProject.APITestConsoleApp.LLConsoleMenu
             {
                 PositionX = Console.CursorLeft;
                 PositionY = Console.CursorTop;
-                SelectedItemIndex = 0;
             }
+            SelectedItemIndex = 0;
 
             PrevForegroundColor = Console.ForegroundColor;
             PrevBackgroundColor = Console.BackgroundColor;
