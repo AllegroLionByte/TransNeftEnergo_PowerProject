@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,12 +30,18 @@ namespace TNEPowerProject.WebAPI
             string energoDBConnectionString = Configuration.GetConnectionString("EnergoDBConnectionString");
             services.AddDbContext<EnergoDBContext>(options => options.UseSqlServer(energoDBConnectionString));
             services.AddScoped<ITransformerTypesService, TransformerTypesService>();
+            services.AddScoped<IElectricityConsumptionObjectsService, ElectricityConsumptionObjectsService>();
             services.AddScoped<IElectricEnergyMeterTypesService, ElectricEnergyMeterTypesService>();
+            services.AddScoped<IElectricityMeasuringPointsService, ElectricityMeasuringPointsService>();
             services.AddScoped<IElectricEnergyMetersService, ElectricEnergyMetersService>();
             services.AddScoped<ICurrentTransformersService, CurrentTransformersService>();
             services.AddScoped<IVoltageTransformersService, VoltageTransformersService>();
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            }); ;
 
             services.AddSwaggerGen(c =>
             {
