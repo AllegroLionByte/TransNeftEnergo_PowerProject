@@ -39,7 +39,7 @@ namespace TNEPowerProject.APITestConsoleApp
                 IsSpinning = false;
                 if (LastPositionX + 1 == Console.CursorLeft && LastPositionY == Console.CursorTop)
                 {
-                    Console.SetCursorPosition(LastPositionX - 1, LastPositionY);
+                    Console.SetCursorPosition(LastPositionX, LastPositionY);
                     Console.Write(' ');
                 }
             }
