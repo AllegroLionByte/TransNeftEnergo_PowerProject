@@ -56,7 +56,10 @@ namespace TNEPowerProject.Infrastructure.Repository
         {
             try
             {
-                return await dbContext.Set<ElectricEnergyMeter>().Include(x => x.EEMeterType).FirstOrDefaultAsync(x => x.Id == id);
+                return await dbContext.Set<ElectricEnergyMeter>()
+                    .Include(x => x.EEMeterType)
+                    .Include(x => x.MeasuringPoint)
+                    .FirstOrDefaultAsync(x => x.Id == id);
             }
             catch (Exception ex)
             {
