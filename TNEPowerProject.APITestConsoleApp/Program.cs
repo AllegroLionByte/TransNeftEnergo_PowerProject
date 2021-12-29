@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using TNEPowerProject.APITestConsoleApp.LLConsoleMenu;
 using TNEPowerProject.Contract.DTO;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeters;
+using TNEPowerProject.Contract.DTO.AccountingDeviceInfos;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeterTypes;
 using TNEPowerProject.Contract.DTO.ElectricityMeasuringPoints;
 using TNEPowerProject.Contract.DTO.ElectricityConsumptionObjects;
@@ -20,6 +21,8 @@ namespace TNEPowerProject.APITestConsoleApp
 
         private static readonly IHeartbeatAPI heartbeatAPI;
 
+        public static readonly IAccountingDeviceInfosAPI accountingDeviceInfosAPI;
+
         private static readonly IElectricityConsumptionObjectsAPI electricityConsumptionObjectsAPI;
 
         private static readonly IElectricityMeasuringPointsAPI electricityMeasuringPointsAPI;
@@ -35,6 +38,7 @@ namespace TNEPowerProject.APITestConsoleApp
                .AddNewMenuEntry(new LLMenuEntry("Проверить статус API", TestHeartbeatAPI))
                .AddNewMenuEntry(new LLMenuEntry("[НЕРЕАЛИЗОВАНО] Автоматическое тестирование API", AutoTestAPI))
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для объектов потребления", TestEConsumptionObjectsAPI))
+               .AddNewMenuEntry(new LLMenuEntry("Тестирование API для расчетных приборов учета", TestAccountingDeviceInfosAPI))
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для точек измерения электроэнергии", TestElectricityMeasuringPointsAPI))
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для счётчиков электрической энергии", TestElectricEnergyMetersAPI))
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для типов счётчиков электрической энергии", TestElectricEnergyMeterTypesAPI))
@@ -44,6 +48,10 @@ namespace TNEPowerProject.APITestConsoleApp
                .AppendDefaultExitItem("Выход");
 
         private static readonly LLMenu AutotestMenu = new LLMenu("Выберите действие:")
+               .AppendDefaultExitItem();
+
+        private static readonly LLMenu AccountingDeviceInfosTestMenu = new LLMenu("Выберите действие для тестирования API расчетных приборов учета:")
+               .AddNewMenuEntry(new LLMenuEntry("Вывести список расчетных приборов учета для выбранного года", TestAccountingDeviceInfosAPI_GetByYear))
                .AppendDefaultExitItem();
 
         private static readonly LLMenu EConsumptionObjectsTestMenu = new LLMenu("Выберите действие для тестирования API объектов потребления:")
@@ -88,6 +96,8 @@ namespace TNEPowerProject.APITestConsoleApp
             refitSettings = new RefitSettings { ContentSerializer = new NewtonsoftJsonContentSerializer() };
 
             heartbeatAPI = RestService.For<IHeartbeatAPI>(APIAddress, refitSettings);
+
+            accountingDeviceInfosAPI = RestService.For<IAccountingDeviceInfosAPI>(APIAddress, refitSettings);
 
             electricityConsumptionObjectsAPI = RestService.For<IElectricityConsumptionObjectsAPI>(APIAddress, refitSettings);
 
@@ -201,6 +211,74 @@ namespace TNEPowerProject.APITestConsoleApp
         {
             await AutotestMenu.DoMenuAsync();
             return true;
+        }
+        #endregion
+        #region AccountingDeviceInfosAPI
+        private static async Task<bool> TestAccountingDeviceInfosAPI()
+        {
+            await AccountingDeviceInfosTestMenu.DoMenuAsync();
+            return true;
+        }
+        private static async Task<bool> TestAccountingDeviceInfosAPI_GetByYear()
+        {
+            return await DoTest(async () =>
+            {
+                Console.Write("Получение списка расчетных приборов учета для выбранного года");
+
+                Console.Write("Введите год: ");
+                Console.CursorVisible = true;
+                if (!int.TryParse(Console.ReadLine(), out int year))
+                {
+                    Console.WriteLine("Неправильно введён год!");
+                    return true;
+                }
+                Console.CursorVisible = false;
+
+                Console.Write("Выполнение запроса... ");
+                spinner.StartSpinner();
+                TNEBaseDTO<AccountingDeviceInfosListDTO> result = await accountingDeviceInfosAPI.GetAllByYear(year);
+                spinner.StopSpinner();
+
+                if (result == null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("[FAIL]");
+                    Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                }
+                else
+                {
+                    Console.WriteLine("[OK]");
+                    Console.WriteLine($"Ожидаемый статус: 200. Полученный статус: {result.StatusCode} [{((result.StatusCode == 200) ? "OK" : "FAIL")}]");
+                    if (result.StatusCode == 200 && result.Result != null && result.Result.AccountingDeviceInfos != null)
+                    {
+                        if (result.Result.AccountingDeviceInfos.Count == 0)
+                        {
+                            Console.WriteLine($"Ответ получен правильный, однако, список пуст.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Список расчетных приборов учета:");
+                        }
+                        for (int i = 0; i < result.Result.AccountingDeviceInfos.Count; i++)
+                        {
+                            AccountingDeviceInfosListDTO.AccountingDeviceInfoListItemDTO accDevInfo = result.Result.AccountingDeviceInfos[i];
+                            Console.WriteLine($"{i + 1}. Id: {accDevInfo.Id}, начало периода: {accDevInfo.Interval_From:dd.MM.yyyy}" +
+                                $", конец периода: {accDevInfo.Interval_To:dd.MM.yyyy}, потр. электр.: {accDevInfo.ConsumedElectricity}" +
+                                $", ИдТПЭ: {accDevInfo.ElectricitySupplyPointId}, имя ТПЭ: {accDevInfo.ElectricitySupplyPointName}" +
+                                $", ИдТИЭ: {accDevInfo.ElectricityMeasuringPointId}, имя ИдТИЭ: {accDevInfo.ElectricityMeasuringPointName}");
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                        Console.WriteLine($"Сообщение: {result.Message}");
+                    }
+                }
+                return true;
+            });
         }
         #endregion
         #region ElectricityConsumptionObjectsAPI
