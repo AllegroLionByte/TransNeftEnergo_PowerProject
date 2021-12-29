@@ -5,6 +5,8 @@ using TNEPowerProject.APITestConsoleApp.LLConsoleMenu;
 using TNEPowerProject.Contract.DTO;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeters;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeterTypes;
+using TNEPowerProject.Contract.DTO.ElectricityMeasuringPoints;
+using TNEPowerProject.Contract.DTO.ElectricityConsumptionObjects;
 using TNEPowerProject.Contract.DTO.Transformers;
 using TNEPowerProject.Contract.Interfaces;
 
@@ -18,6 +20,10 @@ namespace TNEPowerProject.APITestConsoleApp
 
         private static readonly IHeartbeatAPI heartbeatAPI;
 
+        private static readonly IElectricityConsumptionObjectsAPI electricityConsumptionObjectsAPI;
+
+        private static readonly IElectricityMeasuringPointsAPI electricityMeasuringPointsAPI;
+
         private static readonly IElectricEnergyMetersAPI electricEnergyMetersAPI;
         private static readonly IElectricEnergyMeterTypesAPI electricEnergyMeterTypesAPI;
 
@@ -28,6 +34,8 @@ namespace TNEPowerProject.APITestConsoleApp
         private static readonly LLMenu MainMenu = new LLMenu("Выберите действие:")
                .AddNewMenuEntry(new LLMenuEntry("Проверить статус API", TestHeartbeatAPI))
                .AddNewMenuEntry(new LLMenuEntry("[НЕРЕАЛИЗОВАНО] Автоматическое тестирование API", AutoTestAPI))
+               .AddNewMenuEntry(new LLMenuEntry("Тестирование API для объектов потребления", TestEConsumptionObjectsAPI))
+               .AddNewMenuEntry(new LLMenuEntry("Тестирование API для точек измерения электроэнергии", TestElectricityMeasuringPointsAPI))
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для счётчиков электрической энергии", TestElectricEnergyMetersAPI))
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для типов счётчиков электрической энергии", TestElectricEnergyMeterTypesAPI))
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для трансформаторов тока", TestCurrentTransformersAPI))
@@ -36,6 +44,16 @@ namespace TNEPowerProject.APITestConsoleApp
                .AppendDefaultExitItem("Выход");
 
         private static readonly LLMenu AutotestMenu = new LLMenu("Выберите действие:")
+               .AppendDefaultExitItem();
+
+        private static readonly LLMenu EConsumptionObjectsTestMenu = new LLMenu("Выберите действие для тестирования API объектов потребления:")
+               .AddNewMenuEntry(new LLMenuEntry("Вывести список объектов потребления", TestEConsumptionObjectsAPI_List))
+               .AppendDefaultExitItem();
+
+        private static readonly LLMenu EMeasuringPointsTestMenu = new LLMenu("Выберите действие для тестирования API точек измерения электроэнергии:")
+               .AddNewMenuEntry(new LLMenuEntry("Проверить существование точки измерения электроэнергии по Id", TestEMeasuringPointsAPI_CheckIdExists))
+               .AddNewMenuEntry(new LLMenuEntry("Получить точку измерения электроэнергии по Id", TestEMeasuringPointsAPI_GetById))
+               .AddNewMenuEntry(new LLMenuEntry("Добавить новую точку измерения электроэнергии", TestEMeasuringPointsAPI_Create))
                .AppendDefaultExitItem();
 
         private static readonly LLMenu EEMetersTestMenu = new LLMenu("Выберите действие для тестирования API счётчиков электрической энергии:")
@@ -70,6 +88,10 @@ namespace TNEPowerProject.APITestConsoleApp
             refitSettings = new RefitSettings { ContentSerializer = new NewtonsoftJsonContentSerializer() };
 
             heartbeatAPI = RestService.For<IHeartbeatAPI>(APIAddress, refitSettings);
+
+            electricityConsumptionObjectsAPI = RestService.For<IElectricityConsumptionObjectsAPI>(APIAddress, refitSettings);
+
+            electricityMeasuringPointsAPI = RestService.For<IElectricityMeasuringPointsAPI>(APIAddress, refitSettings);
 
             electricEnergyMetersAPI = RestService.For<IElectricEnergyMetersAPI>(APIAddress, refitSettings);
             electricEnergyMeterTypesAPI = RestService.For<IElectricEnergyMeterTypesAPI>(APIAddress, refitSettings);
@@ -179,6 +201,248 @@ namespace TNEPowerProject.APITestConsoleApp
         {
             await AutotestMenu.DoMenuAsync();
             return true;
+        }
+        #endregion
+        #region ElectricityConsumptionObjectsAPI
+        private static async Task<bool> TestEConsumptionObjectsAPI()
+        {
+            await EConsumptionObjectsTestMenu.DoMenuAsync();
+            return true;
+        }
+        private static async Task<bool> TestEConsumptionObjectsAPI_List()
+        {
+            return await DoTest(async () =>
+            {
+                Console.Write("Получение списка объектов потребления... ");
+                spinner.StartSpinner();
+                TNEBaseDTO<ElectricityConsumptionObjectsListDTO> result = await electricityConsumptionObjectsAPI.GetAll();
+                spinner.StopSpinner();
+
+                if (result == null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("[FAIL]");
+                    Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                }
+                else
+                {
+                    Console.WriteLine("[OK]");
+                    Console.WriteLine($"Ожидаемый статус: 200. Полученный статус: {result.StatusCode} [{((result.StatusCode == 200) ? "OK" : "FAIL")}]");
+                    if (result.StatusCode == 200 && result.Result != null && result.Result.ElectricityConsumptionObjects != null)
+                    {
+                        if (result.Result.ElectricityConsumptionObjects.Count == 0)
+                        {
+                            Console.WriteLine($"Ответ получен правильный, однако, список пуст.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Список объектов потребления:");
+                        }
+                        for (int i = 0; i < result.Result.ElectricityConsumptionObjects.Count; i++)
+                        {
+                            ElectricityConsumptionObjectsListDTO.ElectricityConsumptionObjectListItemDTO eConsObj = result.Result.ElectricityConsumptionObjects[i];
+                            Console.WriteLine($"{i + 1}. Id: {eConsObj.Id}, имя: {eConsObj.Name}" +
+                                $", Id ДК: {eConsObj.SubOrganizationId}, имя ДК: {eConsObj.SubOrganizationName}");
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                        Console.WriteLine($"Сообщение: {result.Message}");
+                    }
+                }
+                return true;
+            });
+        }
+        #endregion
+        #region ElectricityMeasuringPointsAPI
+        private static async Task<bool> TestElectricityMeasuringPointsAPI()
+        {
+            await EMeasuringPointsTestMenu.DoMenuAsync();
+            return true;
+        }
+        private static async Task<bool> TestEMeasuringPointsAPI_CheckIdExists()
+        {
+            return await DoTest(async () =>
+            {
+                Console.WriteLine("Проверка существования точки измерения электроэнергии по Id");
+
+                Console.CursorVisible = true;
+                Console.Write("Введите Id точки измерения электроэнергии: ");
+                if (!int.TryParse(Console.ReadLine(), out int eMeasPointId))
+                {
+                    Console.WriteLine("Неправильно введён Id!");
+                    return true;
+                }
+                Console.CursorVisible = false;
+
+                Console.Write("Выполнение запроса... ");
+                spinner.StartSpinner();
+                TNEBaseDTO<ElectricityMeasuringPointExistenceDTO> result = await electricityMeasuringPointsAPI.CheckElectricityMeasuringPointExists(eMeasPointId);
+                spinner.StopSpinner();
+                Console.WriteLine("[OK]");
+
+                if (result == null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("[FAIL]");
+                    Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                }
+                else
+                {
+                    Console.WriteLine($"Ожидаемый статус: 200. Полученный статус: {result.StatusCode} [{((result.StatusCode == 200) ? "OK" : "FAIL")}]");
+
+                    if (result.StatusCode == 200)
+                    {
+                        Console.WriteLine($"Указанный Id {(result.Result.Exists ? "" : "не ")}существует");
+                    }
+                    else
+                        Console.WriteLine("Получен не правильный код ответа.");
+                }
+
+                return true;
+            });
+        }
+        private static async Task<bool> TestEMeasuringPointsAPI_GetById()
+        {
+            return await DoTest(async () =>
+            {
+                Console.WriteLine("Получение точки измерения электроэнергии по Id");
+
+                Console.CursorVisible = true;
+                Console.Write("Введите Id точки измерения электроэнергии: ");
+                if (!int.TryParse(Console.ReadLine(), out int eMeasPointId))
+                {
+                    Console.WriteLine("Неправильно введён Id!");
+                    return true;
+                }
+                Console.CursorVisible = false;
+
+                Console.Write("Выполнение запроса... ");
+                spinner.StartSpinner();
+                TNEBaseDTO<ElectricityMeasuringPointDTO> result = await electricityMeasuringPointsAPI.GetElectricityMeasuringPoint(eMeasPointId);
+                spinner.StopSpinner();
+                Console.WriteLine("[OK]");
+
+                if (result == null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("[FAIL]");
+                    Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                }
+                else
+                {
+                    Console.WriteLine($"Ожидаемый статус: 200. Полученный статус: {result.StatusCode} [{((result.StatusCode == 200) ? "OK" : "FAIL")}]");
+
+                    if (result.StatusCode == 200 && result.Result != null)
+                    {
+                        Console.WriteLine($"По указанному Id [{eMeasPointId}] найдена точка измерения электроэнергии:");
+                        Console.WriteLine($"Имя: {result.Result.Name}, СЭЭ: {result.Result.ElectricEnergyMeterId}/{result.Result.ElectricEnergyMeterNumber}" +
+                            $", ТТ: {result.Result.CurrentTransformerId}/{result.Result.CurrentTransformerNumber}" +
+                            $", ТН: {result.Result.VoltageTransformerId}/{result.Result.VoltageTransformerNumber}" +
+                            $", ИдОП: {result.Result.ElectricityConsumptionObjectId}");
+                    }
+                    else if (result.StatusCode == 404)
+                    {
+                        Console.WriteLine($"Указанный Id не существует");
+                    }
+                    else
+                        Console.WriteLine("Получен не правильный код ответа.");
+                }
+
+                return true;
+            });
+        }
+        private static async Task<bool> TestEMeasuringPointsAPI_Create()
+        {
+            return await DoTest(async () =>
+            {
+                Console.WriteLine("Создание новой точки измерения электроэнергии:");
+
+                CreateElectricityMeasuringPointDTO requestDTO = new CreateElectricityMeasuringPointDTO();
+
+                Console.CursorVisible = true;
+                Console.Write("Введите имя точки измерения электроэнергии: ");
+                requestDTO.Name = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(requestDTO.Name))
+                {
+                    Console.WriteLine("Неправильно введено имя точки измерения электроэнергии");
+                    return true;
+                }
+
+                Console.Write("Введите Id счётчика электрической энергии: ");
+                if (!int.TryParse(Console.ReadLine(), out int ElectricEnergyMeterId))
+                {
+                    Console.WriteLine("Неправильно введён Id счётчика электрической энергии");
+                    return true;
+                }
+                requestDTO.ElectricEnergyMeterId = ElectricEnergyMeterId;
+
+                Console.Write("Введите Id трансформатора тока: ");
+                if (!int.TryParse(Console.ReadLine(), out int CurrentTransformerId))
+                {
+                    Console.WriteLine("Неправильно введён Id трансформатора тока");
+                    return true;
+                }
+                requestDTO.CurrentTransformerId = CurrentTransformerId;
+
+                Console.Write("Введите Id трансформатора напряжения: ");
+                if (!int.TryParse(Console.ReadLine(), out int VoltageTransformerId))
+                {
+                    Console.WriteLine("Неправильно введён Id трансформатора напряжения");
+                    return true;
+                }
+                requestDTO.VoltageTransformerId = VoltageTransformerId;
+
+                Console.Write("Введите Id объекта потребления: ");
+                if (!int.TryParse(Console.ReadLine(), out int ElectricityConsumptionObjectId))
+                {
+                    Console.WriteLine("Неправильно введён Id объекта потребления");
+                    return true;
+                }
+                requestDTO.ElectricityConsumptionObjectId = ElectricityConsumptionObjectId;
+                Console.CursorVisible = false;
+
+                Console.Write("Выполнение запроса... ");
+                spinner.StartSpinner();
+                TNEBaseDTO<ElectricityMeasuringPointDTO> result = await electricityMeasuringPointsAPI.CreateElectricityMeasuringPoint(requestDTO);
+                spinner.StopSpinner();
+
+                if (result == null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("[FAIL]");
+                    Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                }
+                else
+                {
+                    Console.WriteLine("[OK]");
+                    Console.WriteLine($"Ожидаемый статус: 201. Полученный статус: {result.StatusCode} [{((result.StatusCode == 201) ? "OK" : "FAIL")}]");
+                    if (result.StatusCode == 201 && result.Result != null)
+                    {
+                        Console.WriteLine($"Новая точка измерения электроэнергии создана успешно.\n" +
+                            $"Id: {result.Result.Id}, имя: {result.Result.Name}" +
+                            $", СЭЭ: {result.Result.ElectricEnergyMeterId}/{result.Result.ElectricEnergyMeterNumber}" +
+                            $", ТТ: {result.Result.CurrentTransformerId}/{result.Result.CurrentTransformerNumber}" +
+                            $", ТН: {result.Result.VoltageTransformerId}/{result.Result.VoltageTransformerNumber}" +
+                            $", ИдОП: {result.Result.ElectricityConsumptionObjectId}");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                        Console.WriteLine($"Сообщение: {result.Message}");
+                    }
+                }
+                return true;
+            });
         }
         #endregion
         #region ElectricEnergyMetersAPI
@@ -336,7 +600,7 @@ namespace TNEPowerProject.APITestConsoleApp
                         for (int i = 0; i < result.Result.ElectricEnergyMeters.Count; i++)
                         {
                             ElectricEnergyMetersListDTO.ElectricEnergyMeterListItemDTO eEMeter = result.Result.ElectricEnergyMeters[i];
-                            Console.WriteLine($"{i}. Id: {eEMeter.Id}, номер: {eEMeter.Number}, д.п.: {eEMeter.VerificationDate:dd.MM.yyyy}, п.п.: {eEMeter.VerificationPeriod.Date:dd.MM:yyyy}, тип: {eEMeter.EEMeterTypeDescription}");
+                            Console.WriteLine($"{i + 1}. Id: {eEMeter.Id}, номер: {eEMeter.Number}, д.п.: {eEMeter.VerificationDate:dd.MM.yyyy}, п.п.: {eEMeter.VerificationPeriod.Date:dd.MM:yyyy}, тип: {eEMeter.EEMeterTypeDescription}");
                         }
                     }
                     else
@@ -483,7 +747,7 @@ namespace TNEPowerProject.APITestConsoleApp
                         for (int i = 0; i < result.Result.ElectricEnergyMeterTypes.Count; i++)
                         {
                             ElectricEnergyMeterTypesListDTO.ElectricEnergyMeterTypeListItemDTO eEMType = result.Result.ElectricEnergyMeterTypes[i];
-                            Console.WriteLine($"{i}. Id: {eEMType.Id}, имя: {eEMType.Description}");
+                            Console.WriteLine($"{i + 1}. Id: {eEMType.Id}, имя: {eEMType.Description}");
                         }
                     }
                     else
@@ -901,7 +1165,7 @@ namespace TNEPowerProject.APITestConsoleApp
                         for (int i = 0; i < result.Result.TransformerTypes.Count; i++)
                         {
                             TransformerTypesListDTO.TransformerTypeListItemDTO transformerType = result.Result.TransformerTypes[i];
-                            Console.WriteLine($"{i}. Id: {transformerType.Id}, имя: {transformerType.Description}");
+                            Console.WriteLine($"{i + 1}. Id: {transformerType.Id}, имя: {transformerType.Description}");
                         }
                     }
                     else
