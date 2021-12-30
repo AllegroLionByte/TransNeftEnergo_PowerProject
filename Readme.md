@@ -21,7 +21,8 @@ Trans Neft Energo - Power Project
 ### Внешние зависимости
 
 + Microsoft.EntityFrameworkCore **v5.0.13** - `Infrastructure`;
-+ Microsoft.EntityFrameworkCore.SqlServer **v5.0.13** - `WebAPI`;
++ Microsoft.EntityFrameworkCore.SqlServer **v5.0.13** - `WebAPI`, `Logics`;
++ Microsoft.EntityFrameworkCore.Proxies **v5.0.13** - `Logics`;
 + Microsoft.AspNetCore.Mvc.Core **v2.2.5** - `Contract.Interfaces`;
 + Microsoft.AspNetCore.Mvc.NewtonsoftJson **v3.1.22** - `WebAPI`;
 + Swashbuckle.AspNetCore **v6.2.3** - `WebAPI`;
@@ -53,7 +54,7 @@ Trans Neft Energo - Power Project
 + В качестве альтернативного подхода к проектированию можно было бы вынести общие для точки измерения и трансформаторов данные в отдельную сущность (например, номер, тип, дату поверки).
 
 ## Запуск
-Запускаемым проектом в решении назначен `TNEPowerProject.WebAPI`. Приложение запускает веб-сервер Kestrel на порту `8080` для http (с редиректом на https) и на порту `8081` для https. Для быстрого теста API можно воспользоваться подключенным к проекту Swagger'ом. Чтобы запустить тестирующее API консольное приложение необходимо запустить следующий файл, находящийся в корне решения:
+Запускаемым проектом в решении назначен `TNEPowerProject.WebAPI`. Приложение запускает веб-сервер Kestrel на порту `8080` для http (с редиректом на https) и на порту `8081` для https. Для быстрого теста API можно воспользоваться подключенным к проекту Swagger'ом. Чтобы запустить тестирующее API консольное приложение необходимо собрать решение и запустить следующий файл, находящийся в корне решения:
 
 ```(txt)
 RunTestApp.bat
