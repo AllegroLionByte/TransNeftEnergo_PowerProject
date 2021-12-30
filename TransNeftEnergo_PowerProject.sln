@@ -26,8 +26,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TNEPowerProject.Contract.In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TNEPowerProject.Contract.DTO", "TNEPowerProject.Contract.DTO\TNEPowerProject.Contract.DTO.csproj", "{34189660-2B42-4924-B62B-6B70073A50ED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TNEPowerProject.WebAPI.Test", "TNEPowerProject.WebAPI.Test\TNEPowerProject.WebAPI.Test.csproj", "{DBDDCC0C-85BD-49DC-BF46-E3A78A4C266B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TNEPowerProject.Contract.Enums", "TNEPowerProject.Contract.Enums\TNEPowerProject.Contract.Enums.csproj", "{73B3169B-09F6-4A53-9C51-543F40315028}"
 EndProject
 Global
@@ -64,10 +62,6 @@ Global
 		{34189660-2B42-4924-B62B-6B70073A50ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34189660-2B42-4924-B62B-6B70073A50ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34189660-2B42-4924-B62B-6B70073A50ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DBDDCC0C-85BD-49DC-BF46-E3A78A4C266B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBDDCC0C-85BD-49DC-BF46-E3A78A4C266B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DBDDCC0C-85BD-49DC-BF46-E3A78A4C266B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DBDDCC0C-85BD-49DC-BF46-E3A78A4C266B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{73B3169B-09F6-4A53-9C51-543F40315028}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{73B3169B-09F6-4A53-9C51-543F40315028}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73B3169B-09F6-4A53-9C51-543F40315028}.Release|Any CPU.ActiveCfg = Release|Any CPU
