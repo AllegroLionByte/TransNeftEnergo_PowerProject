@@ -20,6 +20,7 @@ namespace TNEPowerProject.APITestConsoleApp
 
         private static readonly RefitSettings refitSettings;
 
+        #region APIs
         private static readonly IHeartbeatAPI heartbeatAPI;
 
         public static readonly IAccountingDeviceInfosAPI accountingDeviceInfosAPI;
@@ -36,10 +37,10 @@ namespace TNEPowerProject.APITestConsoleApp
         private static readonly ITransformerTypesAPI transformerTypesAPI;
 
         private static readonly IExpiredElectricEquipmentAPI expiredElectricEquipmentAPI;
-
+        #endregion
+        #region Menus
         private static readonly LLMenu MainMenu = new LLMenu("Выберите действие:")
                .AddNewMenuEntry(new LLMenuEntry("Проверить статус API", TestHeartbeatAPI))
-               .AddNewMenuEntry(new LLMenuEntry("[НЕРЕАЛИЗОВАНО] Автоматическое тестирование API", AutoTestAPI))
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для объектов потребления", TestEConsumptionObjectsAPI))
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для расчетных приборов учета", TestAccountingDeviceInfosAPI))
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для точек измерения электроэнергии", TestElectricityMeasuringPointsAPI))
@@ -50,9 +51,6 @@ namespace TNEPowerProject.APITestConsoleApp
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для типов трансформаторов", TestTransformerTypesAPI))
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для объектов электрической инфраструктуры с истёкшими сроками поверки", TestExpiredElectricEquipmentAPI))
                .AppendDefaultExitItem("Выход");
-
-        private static readonly LLMenu AutotestMenu = new LLMenu("Выберите действие:")
-               .AppendDefaultExitItem();
 
         private static readonly LLMenu AccountingDeviceInfosTestMenu = new LLMenu("Выберите действие для тестирования API расчетных приборов учета:")
                .AddNewMenuEntry(new LLMenuEntry("Вывести список расчетных приборов учета для выбранного года", TestAccountingDeviceInfosAPI_GetByYear))
@@ -98,6 +96,7 @@ namespace TNEPowerProject.APITestConsoleApp
                .AddNewMenuEntry(new LLMenuEntry("Получить список трансформаторов тока с истёкшими сроками поверки", TestExpiredElectricEquipmentAPI_CTransformers))
                .AddNewMenuEntry(new LLMenuEntry("Получить список трансформаторов напряжения с истёкшими сроками поверки", TestExpiredElectricEquipmentAPI_VTransformers))
                .AppendDefaultExitItem();
+        #endregion
 
         private static AsyncSpinner spinner;
 
@@ -216,13 +215,6 @@ namespace TNEPowerProject.APITestConsoleApp
                 }
                 return true;
             });
-        }
-        #endregion
-        #region AutoTestAPI
-        public static async Task<bool> AutoTestAPI()
-        {
-            await AutotestMenu.DoMenuAsync();
-            return true;
         }
         #endregion
         #region AccountingDeviceInfosAPI
@@ -1280,7 +1272,7 @@ namespace TNEPowerProject.APITestConsoleApp
         {
             return await DoTest(async () =>
             {
-                Console.Write("Получение списка счётчиков электрической энергии с истёкшими сроками поверки... ");
+                Console.WriteLine("Получение списка счётчиков электрической энергии с истёкшими сроками поверки... ");
 
                 Console.CursorVisible = true;
                 Console.Write("Введите Id объекта потребления: ");
@@ -1341,7 +1333,7 @@ namespace TNEPowerProject.APITestConsoleApp
         {
             return await DoTest(async () =>
             {
-                Console.Write("Получение списка трансформаторов тока с истёкшими сроками поверки... ");
+                Console.WriteLine("Получение списка трансформаторов тока с истёкшими сроками поверки... ");
 
                 Console.CursorVisible = true;
                 Console.Write("Введите Id объекта потребления: ");
@@ -1403,7 +1395,7 @@ namespace TNEPowerProject.APITestConsoleApp
         {
             return await DoTest(async () =>
             {
-                Console.Write("Получение списка трансформаторов напряжения с истёкшими сроками поверки... ");
+                Console.WriteLine("Получение списка трансформаторов напряжения с истёкшими сроками поверки... ");
 
                 Console.CursorVisible = true;
                 Console.Write("Введите Id объекта потребления: ");
