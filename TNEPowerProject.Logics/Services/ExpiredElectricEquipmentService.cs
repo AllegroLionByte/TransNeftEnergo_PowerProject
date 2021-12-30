@@ -11,6 +11,8 @@ using TNEPowerProject.Infrastructure.Database.EFCore;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeters;
 using TNEPowerProject.Contract.DTO.ExpiredElectricEquipment;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace TNEPowerProject.Logics.Services
 {
@@ -43,9 +45,36 @@ namespace TNEPowerProject.Logics.Services
         /// <param name="consObjId">
         /// Id объекта потребления, для которого выполняется поиск
         /// </param>
-        public Task<TNEBaseDTO<ExpiredElectricEquipmentListDTO<ElectricEnergyMeterDTO>>> GetExpiredElectricEnergyMeters(int consObjId)
+        public async Task<TNEBaseDTO<ExpiredElectricEquipmentListDTO<ElectricEnergyMeterDTO>>> GetExpiredElectricEnergyMeters(int consObjId)
         {
-            throw new System.NotImplementedException();
+            ElectricityConsumptionObject eConsObj = await electricityConsumptionObjectsRepository.GetById(consObjId);
+            if (eConsObj == null)
+                return new TNEBaseDTO<ExpiredElectricEquipmentListDTO<ElectricEnergyMeterDTO>>(RestResponseCode.NotFound,
+                    "Объект потребления для заданного Id не найден.");
+
+            ExpiredElectricEquipmentListDTO<ElectricEnergyMeterDTO> result = new ExpiredElectricEquipmentListDTO<ElectricEnergyMeterDTO>()
+            {
+                ConsumptionObjectId = consObjId,
+                ConsumptionObjectName = eConsObj.Name
+            };
+
+            DateTime nowDate = DateTime.Now.Date;
+            result.ExpiredElectricEquipment = new List<ElectricEnergyMeterDTO>((await electricityMeasuringPointsRepository
+                .FindWithIncludedEquipment(w => w.ElectricityConsumptionObjectId == consObjId && w.ElectricEnergyMeter.VerificationPeriod < nowDate))
+                .Select(x => new ElectricEnergyMeterDTO()
+                {
+                    Id = x.CurrentTransformer.Id,
+                    Number = x.CurrentTransformer.Number,
+                    EEMeterTypeId = x.ElectricEnergyMeter.Id,
+                    EEMeterTypeDescription = x.ElectricEnergyMeter.EEMeterType.Description,
+                    VerificationDate = x.CurrentTransformer.VerificationDate,
+                    VerificationPeriod = x.CurrentTransformer.VerificationPeriod
+                }));
+
+            return new TNEBaseDTO<ExpiredElectricEquipmentListDTO<ElectricEnergyMeterDTO>>(RestResponseCode.OK)
+            {
+                Result = result
+            };
         }
         /// <summary>
         /// Позволяет получить список всех трансформаторов тока с просроченным сроком поверки
@@ -66,10 +95,20 @@ namespace TNEPowerProject.Logics.Services
                 ConsumptionObjectId = consObjId,
                 ConsumptionObjectName = eConsObj.Name
             };
-            DateTime nowDate = DateTime.Now.Date;
-            electricityMeasuringPointsRepository.FindIncluded(x => x.CurrentTransformer, w => w.ElectricityConsumptionObjectId == consObjId && w.CurrentTransformer.VerificationPeriod < nowDate);
-            ElectricityMeasuringPointsRepository m = new ElectricityMeasuringPointsRepository(null, null);
 
+            DateTime nowDate = DateTime.Now.Date;
+            result.ExpiredElectricEquipment = new List<CurrentTransformerDTO>((await electricityMeasuringPointsRepository
+                .FindWithIncludedEquipment(w => w.ElectricityConsumptionObjectId == consObjId && w.CurrentTransformer.VerificationPeriod < nowDate))
+                .Select(x => new CurrentTransformerDTO()
+                {
+                    Id = x.CurrentTransformer.Id,
+                    Number = x.CurrentTransformer.Number,
+                    TransformationRatio = x.CurrentTransformer.TransformationRatio,
+                    TransformerTypeId = x.CurrentTransformer.TransformerTypeId,
+                    TransformerTypeDescription = x.CurrentTransformer.TransformerType.Description,
+                    VerificationDate = x.CurrentTransformer.VerificationDate,
+                    VerificationPeriod = x.CurrentTransformer.VerificationPeriod
+                }));
 
             return new TNEBaseDTO<ExpiredElectricEquipmentListDTO<CurrentTransformerDTO>>(RestResponseCode.OK)
             {
@@ -83,9 +122,37 @@ namespace TNEPowerProject.Logics.Services
         /// <param name="consObjId">
         /// Id объекта потребления, для которого выполняется поиск
         /// </param>
-        public Task<TNEBaseDTO<ExpiredElectricEquipmentListDTO<VoltageTransformerDTO>>> GetExpiredVoltageTransformers(int consObjId)
+        public async Task<TNEBaseDTO<ExpiredElectricEquipmentListDTO<VoltageTransformerDTO>>> GetExpiredVoltageTransformers(int consObjId)
         {
-            throw new System.NotImplementedException();
+            ElectricityConsumptionObject eConsObj = await electricityConsumptionObjectsRepository.GetById(consObjId);
+            if (eConsObj == null)
+                return new TNEBaseDTO<ExpiredElectricEquipmentListDTO<VoltageTransformerDTO>>(RestResponseCode.NotFound,
+                    "Объект потребления для заданного Id не найден.");
+
+            ExpiredElectricEquipmentListDTO<VoltageTransformerDTO> result = new ExpiredElectricEquipmentListDTO<VoltageTransformerDTO>()
+            {
+                ConsumptionObjectId = consObjId,
+                ConsumptionObjectName = eConsObj.Name
+            };
+
+            DateTime nowDate = DateTime.Now.Date;
+            result.ExpiredElectricEquipment = new List<VoltageTransformerDTO>((await electricityMeasuringPointsRepository
+                .FindWithIncludedEquipment(w => w.ElectricityConsumptionObjectId == consObjId && w.CurrentTransformer.VerificationPeriod < nowDate))
+                .Select(x => new VoltageTransformerDTO()
+                {
+                    Id = x.CurrentTransformer.Id,
+                    Number = x.CurrentTransformer.Number,
+                    TransformationRatio = x.CurrentTransformer.TransformationRatio,
+                    TransformerTypeId = x.CurrentTransformer.TransformerTypeId,
+                    TransformerTypeDescription = x.CurrentTransformer.TransformerType.Description,
+                    VerificationDate = x.CurrentTransformer.VerificationDate,
+                    VerificationPeriod = x.CurrentTransformer.VerificationPeriod
+                }));
+
+            return new TNEBaseDTO<ExpiredElectricEquipmentListDTO<VoltageTransformerDTO>>(RestResponseCode.OK)
+            {
+                Result = result
+            };
         }
     }
 }
