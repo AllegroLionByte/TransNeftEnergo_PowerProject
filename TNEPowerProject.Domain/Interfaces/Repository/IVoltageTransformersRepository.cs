@@ -7,5 +7,6 @@ namespace TNEPowerProject.Domain.Interfaces.Repository
     /// </summary>
     public interface IVoltageTransformersRepository : ITNERepository<VoltageTransformer>
     {
+
     }
 }

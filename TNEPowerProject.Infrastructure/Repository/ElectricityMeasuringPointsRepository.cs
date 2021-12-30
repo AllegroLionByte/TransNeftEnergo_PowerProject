@@ -39,19 +39,21 @@ namespace TNEPowerProject.Infrastructure.Repository
             }
         }
         /// <summary>
-        /// Позволяет получить список точек измерения электроэнергии по заданному условию, включив в результат дополнительные данные
+        /// Позволяет получить список точек измерения электроэнергии по заданному условию, включив в результат трансформаторы и
+        /// счётчики электрической энергии
         /// </summary>
-        /// <param name="includeExpr">
-        /// Выражение, указывающее сущности, которые будут включены в результат
-        /// </param>
         /// <param name="predicate">
         /// Выражение для конструкции Where
         /// </param>
-        public virtual async Task<IEnumerable<ElectricityMeasuringPoint>> FindIncluded(Expression<Func<ElectricityMeasuringPoint, object>> includeExpr, Expression<Func<ElectricityMeasuringPoint, bool>> predicate)
+        public async Task<IEnumerable<ElectricityMeasuringPoint>> FindWithIncludedEquipment(Expression<Func<ElectricityMeasuringPoint, bool>> predicate)
         {
             try
             {
-                return null;// await dbContext.Set<ElectricityMeasuringPoint>().Include<ElectricityMeasuringPoint,>().Where(predicate).ToListAsync();
+                return await dbContext.Set<ElectricityMeasuringPoint>()
+                    .Include(x => x.ElectricEnergyMeter)
+                    .Include(x => x.CurrentTransformer)
+                    .Include(x => x.VoltageTransformer)
+                    .Where(predicate).ToListAsync();
             }
             catch (Exception ex)
             {

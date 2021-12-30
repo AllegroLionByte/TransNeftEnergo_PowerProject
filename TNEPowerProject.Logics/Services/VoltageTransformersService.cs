@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using TNEPowerProject.Contract.DTO;
 using TNEPowerProject.Domain.Entities;
 using TNEPowerProject.Contract.Enums;
 using TNEPowerProject.Infrastructure.Repository;
 using TNEPowerProject.Logics.Interfaces.Services;
 using TNEPowerProject.Contract.DTO.Transformers;
+using TNEPowerProject.Domain.Interfaces.Repository;
 using TNEPowerProject.Infrastructure.Database.EFCore;
-using TNEPowerProject.Contract.DTO;
 
 namespace TNEPowerProject.Logics.Services
 {

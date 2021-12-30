@@ -12,15 +12,12 @@ namespace TNEPowerProject.Domain.Interfaces.Repository
     public interface IElectricityMeasuringPointsRepository : ITNERepository<ElectricityMeasuringPoint>
     {
         /// <summary>
-        /// Позволяет получить список точек измерения электроэнергии по заданному условию, включив в результат дополнительные данные
+        /// Позволяет получить список точек измерения электроэнергии по заданному условию, включив в результат трансформаторы и
+        /// счётчики электрической энергии
         /// </summary>
-        /// <param name="includeExpr">
-        /// Выражение, которое будет включено в конструкцию Include. В данном месте следует указать объект,
-        /// который будет включён в выдаваемый ответ для сущности ElectricityMeasuringPoint
-        /// </param>
         /// <param name="predicate">
         /// Выражение для конструкции Where
         /// </param>
-        Task<IEnumerable<ElectricityMeasuringPoint>> FindIncluded(Expression<Func<ElectricityMeasuringPoint, object>> includeExpr, Expression<Func<ElectricityMeasuringPoint, bool>> predicate);
+        Task<IEnumerable<ElectricityMeasuringPoint>> FindWithIncludedEquipment(Expression<Func<ElectricityMeasuringPoint, bool>> predicate);
     }
 }
