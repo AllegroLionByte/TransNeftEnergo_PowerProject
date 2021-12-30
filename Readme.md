@@ -6,7 +6,6 @@ Trans Neft Energo - Power Project
 
 ## Структура решения
 + `WebAPI` - Приложение ASP.Net Core 3.1, реализующее функционал REST Web API;
-+ `WebAPI.Test` - Приложение ??? для тестирования;
 + `APITestConsoleApp` - Консольное приложение .Net Core для тестирования функций WebAPI;
 + `Contract` - Содержит набор общих интерфейсов и DTO, используемых на презентационном уровне для приложений `WebAPI` и `APITestConsoleApp`;
     + `Contract.Interfaces` - Содержит набор интерфейсов API для реализации в проектах;
@@ -39,7 +38,6 @@ Trans Neft Energo - Power Project
 | Проект | Зависимости |
 | :---: | :---: |
 | `WebAPI`             | `Infrastructure`, `Contract.Interfaces`, `Contract.Enums` |
-| `WebAPI.Test`        | |
 | `APITestConsoleApp` | `Contract.Interfaces`, `Contract.DTO`, `Contract.Enums` |
 | `Contract.Interfaces` | `Contract.DTO` |
 | `Contract.DTO`       | `Contract.Enums` |
