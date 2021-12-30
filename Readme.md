@@ -21,7 +21,10 @@ Trans Neft Energo - Power Project
 ### Внешние зависимости
 
 + Microsoft.EntityFrameworkCore **v5.0.13** - `Infrastructure`;
-+ Microsoft.EntityFrameworkCore.SqlServer **v5.0.13** - `WebAPI`, `Logics`;
++ Microsoft.EntityFrameworkCore.Tools **v5.0.13** - `Infrastructure`;
++ Microsoft.EntityFrameworkCore.Relational **v5.0.13** - `Infrastructure`;
++ Microsoft.EntityFrameworkCore.Design **v5.0.13** - `WebAPI`;
++ Microsoft.EntityFrameworkCore.SqlServer **v5.0.13** - `WebAPI`, `Logics`, `Infrastructure`;
 + Microsoft.EntityFrameworkCore.Proxies **v5.0.13** - `Logics`;
 + Microsoft.AspNetCore.Mvc.Core **v2.2.5** - `Contract.Interfaces`;
 + Microsoft.AspNetCore.Mvc.NewtonsoftJson **v3.1.22** - `WebAPI`;

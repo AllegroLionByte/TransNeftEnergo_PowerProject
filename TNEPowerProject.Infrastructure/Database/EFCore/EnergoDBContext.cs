@@ -59,7 +59,7 @@ namespace TNEPowerProject.Infrastructure.Database.EFCore
             : base(options)
         {
             //Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         /// <summary>
