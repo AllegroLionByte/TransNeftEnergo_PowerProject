@@ -16,7 +16,7 @@ namespace TNEPowerProject.APITestConsoleApp
 {
     internal class Program
     {
-        private const string APIAddress = "https://localhost:8081";
+        private const string APIAddress = "https://localhost:8051";
 
         private static readonly RefitSettings refitSettings;
 
