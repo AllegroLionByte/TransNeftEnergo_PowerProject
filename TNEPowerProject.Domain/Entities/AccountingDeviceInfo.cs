@@ -27,7 +27,7 @@ namespace TNEPowerProject.Domain.Entities
         /// <summary>
         /// Указывает на использовавшуюся точку поставки электроэнергии
         /// </summary>
-        public ElectricitySupplyPoint SupplyPoint { get; set; }
+        public virtual ElectricitySupplyPoint SupplyPoint { get; set; }
         /// <summary>
         /// Указывает на Id использовавшейся точки измерения электроэнергии
         /// </summary>
@@ -35,6 +35,6 @@ namespace TNEPowerProject.Domain.Entities
         /// <summary>
         /// Указывает на использовавшуюся точку измерения электроэнергии
         /// </summary>
-        public ElectricityMeasuringPoint MeasuringPoint { get; set; }
+        public virtual ElectricityMeasuringPoint MeasuringPoint { get; set; }
     }
 }

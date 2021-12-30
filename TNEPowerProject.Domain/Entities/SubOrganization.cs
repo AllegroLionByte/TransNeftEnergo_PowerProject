@@ -26,7 +26,7 @@ namespace TNEPowerProject.Domain.Entities
         /// Родительская организация
         /// </summary>
         [ForeignKey("ParentOrganizationId")]
-        public Organization ParentOrganization { get; set; }
+        public virtual Organization ParentOrganization { get; set; }
         /// <summary>
         /// Список объектов потребления для дочерней организации
         /// </summary>

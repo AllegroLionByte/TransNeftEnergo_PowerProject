@@ -24,7 +24,7 @@ namespace TNEPowerProject.Domain.Entities
         /// <summary>
         /// Дочерняя организация, ответственная за данный объект потребления
         /// </summary>
-        public SubOrganization SubOrganization { get; set; }
+        public virtual SubOrganization SubOrganization { get; set; }
         /// <summary>
         /// Список точек измерения электроэнергии, входящих в объект потребления
         /// </summary>

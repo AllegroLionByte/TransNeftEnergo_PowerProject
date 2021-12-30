@@ -29,7 +29,7 @@ namespace TNEPowerProject.Domain.Entities
         /// Представляет тип счётчика электрической энергии
         /// </summary>
         [ForeignKey("EEMeterTypeId")]
-        public ElectricEnergyMeterType EEMeterType { get; set; }
+        public virtual ElectricEnergyMeterType EEMeterType { get; set; }
 
         /// <summary>
         /// Точка измерения электроэнергии, к которой относится данный счётчик электрической энергии

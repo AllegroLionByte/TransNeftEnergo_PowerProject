@@ -24,7 +24,7 @@ namespace TNEPowerProject.Domain.Entities
         /// <summary>
         /// Объект потребления, к которому относится данная точка поставки электроэнергии
         /// </summary>
-        public ElectricityConsumptionObject ConsumptionObject { get; set; }
+        public virtual ElectricityConsumptionObject ConsumptionObject { get; set; }
 
         /// <summary>
         /// Список связей по расчётному прибору учёта

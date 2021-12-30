@@ -31,7 +31,7 @@ namespace TNEPowerProject.Domain.Entities
         /// <summary>
         /// Представляет тип трансформатора
         /// </summary>
-        public TransformerType TransformerType { get; set; }
+        public virtual TransformerType TransformerType { get; set; }
 
         /// <summary>
         /// Точка измерения электроэнергии, к которой относится данный трансформатор тока

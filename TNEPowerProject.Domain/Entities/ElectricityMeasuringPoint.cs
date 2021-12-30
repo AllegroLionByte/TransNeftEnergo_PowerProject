@@ -19,7 +19,7 @@ namespace TNEPowerProject.Domain.Entities
         /// <summary>
         /// Счётчик электрической энергии, относящийся к данной точки измерения электроэнергии
         /// </summary>
-        public ElectricEnergyMeter ElectricEnergyMeter { get; set; }
+        public virtual ElectricEnergyMeter ElectricEnergyMeter { get; set; }
         /// <summary>
         /// Уникальный идентификатор трансформатора тока
         /// </summary>
@@ -27,7 +27,7 @@ namespace TNEPowerProject.Domain.Entities
         /// <summary>
         /// Трансформатор тока, относящийся к данной точки измерения электроэнергии
         /// </summary>
-        public CurrentTransformer CurrentTransformer { get; set; }
+        public virtual CurrentTransformer CurrentTransformer { get; set; }
         /// <summary>
         /// Уникальный идентификатор трансформатора напряжения
         /// </summary>
@@ -35,7 +35,7 @@ namespace TNEPowerProject.Domain.Entities
         /// <summary>
         /// Трансформатор напряжения, относящийся к данной точки измерения электроэнергии
         /// </summary>
-        public VoltageTransformer VoltageTransformer { get; set; }
+        public virtual VoltageTransformer VoltageTransformer { get; set; }
 
         /// <summary>
         /// Уникальный идентификатор объекта потребления, к которому относится данная точка измерения электроэнергии
