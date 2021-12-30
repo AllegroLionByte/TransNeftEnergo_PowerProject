@@ -1,19 +1,13 @@
+using Newtonsoft.Json;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using TNEPowerProject.Logics.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TNEPowerProject.Infrastructure.Database.EFCore;
-using TNEPowerProject.Logics.Interfaces.Services;
-using TNEPowerProject.Logics.Services;
 
 namespace TNEPowerProject.WebAPI
 {
@@ -28,15 +22,8 @@ namespace TNEPowerProject.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             string energoDBConnectionString = Configuration.GetConnectionString("EnergoDBConnectionString");
-            services.AddDbContext<EnergoDBContext>(options => options.UseSqlServer(energoDBConnectionString));
-            services.AddScoped<ITransformerTypesService, TransformerTypesService>();
-            services.AddScoped<IAccountingDeviceInfosService, AccountingDeviceInfosService>();
-            services.AddScoped<IElectricityConsumptionObjectsService, ElectricityConsumptionObjectsService>();
-            services.AddScoped<IElectricEnergyMeterTypesService, ElectricEnergyMeterTypesService>();
-            services.AddScoped<IElectricityMeasuringPointsService, ElectricityMeasuringPointsService>();
-            services.AddScoped<IElectricEnergyMetersService, ElectricEnergyMetersService>();
-            services.AddScoped<ICurrentTransformersService, CurrentTransformersService>();
-            services.AddScoped<IVoltageTransformersService, VoltageTransformersService>();
+            services.RegisterTNEDataBaseContext(energoDBConnectionString);
+            services.RegisterTNEServices();
 
             services.AddControllers().AddNewtonsoftJson(options =>
             {
@@ -50,8 +37,6 @@ namespace TNEPowerProject.WebAPI
             });
 
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

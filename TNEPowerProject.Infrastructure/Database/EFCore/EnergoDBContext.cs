@@ -75,8 +75,6 @@ namespace TNEPowerProject.Infrastructure.Database.EFCore
             modelBuilder.Entity<CurrentTransformer>().HasOne(c => c.TransformerType).WithMany(t => t.CurrentTransformers).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<VoltageTransformer>().HasOne(v => v.TransformerType).WithMany(t => t.VoltageTransformers).OnDelete(DeleteBehavior.NoAction);
 
-            //modelBuilder.Entity<AccountingDeviceInfo>()
-            //    .HasKey(a => new { a.ElectricityMeasuringPointId, a.ElectricitySupplyPointId });
             modelBuilder.Entity<AccountingDeviceInfo>()
                 .HasOne(a => a.MeasuringPoint)
                 .WithMany(m => m.AccountingDeviceInfos)
