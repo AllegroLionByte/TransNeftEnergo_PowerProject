@@ -1,15 +1,16 @@
 ﻿using Refit;
 using System;
 using System.Threading.Tasks;
-using TNEPowerProject.APITestConsoleApp.LLConsoleMenu;
 using TNEPowerProject.Contract.DTO;
+using TNEPowerProject.Contract.Interfaces;
+using TNEPowerProject.Contract.DTO.Transformers;
+using TNEPowerProject.APITestConsoleApp.LLConsoleMenu;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeters;
 using TNEPowerProject.Contract.DTO.AccountingDeviceInfos;
+using TNEPowerProject.Contract.DTO.ExpiredElectricEquipment;
 using TNEPowerProject.Contract.DTO.ElectricEnergyMeterTypes;
 using TNEPowerProject.Contract.DTO.ElectricityMeasuringPoints;
 using TNEPowerProject.Contract.DTO.ElectricityConsumptionObjects;
-using TNEPowerProject.Contract.DTO.Transformers;
-using TNEPowerProject.Contract.Interfaces;
 
 namespace TNEPowerProject.APITestConsoleApp
 {
@@ -34,6 +35,8 @@ namespace TNEPowerProject.APITestConsoleApp
         private static readonly IVoltageTransformersAPI voltageTransformersAPI;
         private static readonly ITransformerTypesAPI transformerTypesAPI;
 
+        private static readonly IExpiredElectricEquipmentAPI expiredElectricEquipmentAPI;
+
         private static readonly LLMenu MainMenu = new LLMenu("Выберите действие:")
                .AddNewMenuEntry(new LLMenuEntry("Проверить статус API", TestHeartbeatAPI))
                .AddNewMenuEntry(new LLMenuEntry("[НЕРЕАЛИЗОВАНО] Автоматическое тестирование API", AutoTestAPI))
@@ -45,6 +48,7 @@ namespace TNEPowerProject.APITestConsoleApp
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для трансформаторов тока", TestCurrentTransformersAPI))
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для трансформаторов напряжения", TestVoltageTransformersAPI))
                .AddNewMenuEntry(new LLMenuEntry("Тестирование API для типов трансформаторов", TestTransformerTypesAPI))
+               .AddNewMenuEntry(new LLMenuEntry("Тестирование API для объектов электрической инфраструктуры с истёкшими сроками поверки", TestExpiredElectricEquipmentAPI))
                .AppendDefaultExitItem("Выход");
 
         private static readonly LLMenu AutotestMenu = new LLMenu("Выберите действие:")
@@ -89,6 +93,12 @@ namespace TNEPowerProject.APITestConsoleApp
                .AddNewMenuEntry(new LLMenuEntry("Вывести список типов трансформаторов", TestTransformerTypesAPI_List))
                .AppendDefaultExitItem();
 
+        private static readonly LLMenu ExpiredElectricEquipmentTestMenu = new LLMenu("Выберите действие для тестирования API объектов электрической инфраструктуры с истёкшими сроками поверки:")
+               .AddNewMenuEntry(new LLMenuEntry("Получить список счётчиков электрической энергии с истёкшими сроками поверки", TestExpiredElectricEquipmentAPI_EEMeters))
+               .AddNewMenuEntry(new LLMenuEntry("Получить список трансформаторов тока с истёкшими сроками поверки", TestExpiredElectricEquipmentAPI_CTransformers))
+               .AddNewMenuEntry(new LLMenuEntry("Получить список трансформаторов напряжения с истёкшими сроками поверки", TestExpiredElectricEquipmentAPI_VTransformers))
+               .AppendDefaultExitItem();
+
         private static AsyncSpinner spinner;
 
         static Program()
@@ -109,6 +119,8 @@ namespace TNEPowerProject.APITestConsoleApp
             currentTransformersAPI = RestService.For<ICurrentTransformersAPI>(APIAddress, refitSettings);
             voltageTransformersAPI = RestService.For<IVoltageTransformersAPI>(APIAddress, refitSettings);
             transformerTypesAPI = RestService.For<ITransformerTypesAPI>(APIAddress, refitSettings);
+
+            expiredElectricEquipmentAPI = RestService.For<IExpiredElectricEquipmentAPI>(APIAddress, refitSettings);
 
             spinner = new AsyncSpinner();
         }
@@ -1244,6 +1256,198 @@ namespace TNEPowerProject.APITestConsoleApp
                         {
                             TransformerTypesListDTO.TransformerTypeListItemDTO transformerType = result.Result.TransformerTypes[i];
                             Console.WriteLine($"{i + 1}. Id: {transformerType.Id}, имя: {transformerType.Description}");
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                        Console.WriteLine($"Сообщение: {result.Message}");
+                    }
+                }
+                return true;
+            });
+        }
+        #endregion
+        #region ExpiredElectricEquipmentAPI
+        public static async Task<bool> TestExpiredElectricEquipmentAPI()
+        {
+            await ExpiredElectricEquipmentTestMenu.DoMenuAsync();
+            return true;
+        }
+        private static async Task<bool> TestExpiredElectricEquipmentAPI_EEMeters()
+        {
+            return await DoTest(async () =>
+            {
+                Console.Write("Получение списка счётчиков электрической энергии с истёкшими сроками поверки... ");
+
+                Console.CursorVisible = true;
+                Console.Write("Введите Id объекта потребления: ");
+                if (!int.TryParse(Console.ReadLine(), out int consObjId))
+                {
+                    Console.WriteLine("Неправильно введён Id объекта потребления");
+                    return true;
+                }
+                Console.CursorVisible = false;
+
+                spinner.StartSpinner();
+                TNEBaseDTO<ExpiredElectricEquipmentListDTO<ElectricEnergyMeterDTO>> result = await expiredElectricEquipmentAPI.GetExpiredElectricEnergyMeters(consObjId);
+                spinner.StopSpinner();
+
+                if (result == null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("[FAIL]");
+                    Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                }
+                else
+                {
+                    Console.WriteLine("[OK]");
+                    Console.WriteLine($"Ожидаемый статус: 200. Полученный статус: {result.StatusCode} [{((result.StatusCode == 200) ? "OK" : "FAIL")}]");
+                    if (result.StatusCode == 200 && result.Result != null && result.Result.ExpiredElectricEquipment != null)
+                    {
+                        Console.WriteLine($"Вывод списка для объекта потребления: [{result.Result.ConsumptionObjectId}] {result.Result.ConsumptionObjectName}");
+                        if (result.Result.ExpiredElectricEquipment.Count == 0)
+                        {
+                            Console.WriteLine($"Ответ получен правильный, однако, список пуст.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Список счётчиков электрической энергии с истёкшими сроками поверки:");
+                        }
+                        for (int i = 0; i < result.Result.ExpiredElectricEquipment.Count; i++)
+                        {
+                            ElectricEnergyMeterDTO expiredEquipment = result.Result.ExpiredElectricEquipment[i];
+                            Console.WriteLine($"{i + 1}. Id: {expiredEquipment.Id}, ном.: {expiredEquipment.Number}" +
+                                $", дата пов.: {expiredEquipment.VerificationDate:dd:MM:yyyy}" +
+                                $", пер. пов.: {expiredEquipment.VerificationPeriod:dd:MM:yyyy}" +
+                                $", тип: {expiredEquipment.EEMeterTypeDescription}");
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                        Console.WriteLine($"Сообщение: {result.Message}");
+                    }
+                }
+                return true;
+            });
+        }
+        private static async Task<bool> TestExpiredElectricEquipmentAPI_CTransformers()
+        {
+            return await DoTest(async () =>
+            {
+                Console.Write("Получение списка трансформаторов тока с истёкшими сроками поверки... ");
+
+                Console.CursorVisible = true;
+                Console.Write("Введите Id объекта потребления: ");
+                if (!int.TryParse(Console.ReadLine(), out int consObjId))
+                {
+                    Console.WriteLine("Неправильно введён Id объекта потребления");
+                    return true;
+                }
+                Console.CursorVisible = false;
+
+                spinner.StartSpinner();
+                TNEBaseDTO<ExpiredElectricEquipmentListDTO<CurrentTransformerDTO>> result = await expiredElectricEquipmentAPI.GetExpiredCurrentTransformers(consObjId);
+                spinner.StopSpinner();
+
+                if (result == null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("[FAIL]");
+                    Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                }
+                else
+                {
+                    Console.WriteLine("[OK]");
+                    Console.WriteLine($"Ожидаемый статус: 200. Полученный статус: {result.StatusCode} [{((result.StatusCode == 200) ? "OK" : "FAIL")}]");
+                    if (result.StatusCode == 200 && result.Result != null && result.Result.ExpiredElectricEquipment != null)
+                    {
+                        Console.WriteLine($"Вывод списка для объекта потребления: [{result.Result.ConsumptionObjectId}] {result.Result.ConsumptionObjectName}");
+                        if (result.Result.ExpiredElectricEquipment.Count == 0)
+                        {
+                            Console.WriteLine($"Ответ получен правильный, однако, список пуст.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Список трансформаторов тока с истёкшими сроками поверки:");
+                        }
+                        for (int i = 0; i < result.Result.ExpiredElectricEquipment.Count; i++)
+                        {
+                            CurrentTransformerDTO expiredEquipment = result.Result.ExpiredElectricEquipment[i];
+                            Console.WriteLine($"{i + 1}. Id: {expiredEquipment.Id}, ном.: {expiredEquipment.Number}" +
+                                $", дата пов.: {expiredEquipment.VerificationDate:dd:MM:yyyy}" +
+                                $", пер. пов.: {expiredEquipment.VerificationPeriod:dd:MM:yyyy}" +
+                                $", КТТ.: {expiredEquipment.TransformationRatio}" +
+                                $", тип: {expiredEquipment.TransformerTypeDescription}");
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                        Console.WriteLine($"Сообщение: {result.Message}");
+                    }
+                }
+                return true;
+            });
+        }
+        private static async Task<bool> TestExpiredElectricEquipmentAPI_VTransformers()
+        {
+            return await DoTest(async () =>
+            {
+                Console.Write("Получение списка трансформаторов напряжения с истёкшими сроками поверки... ");
+
+                Console.CursorVisible = true;
+                Console.Write("Введите Id объекта потребления: ");
+                if (!int.TryParse(Console.ReadLine(), out int consObjId))
+                {
+                    Console.WriteLine("Неправильно введён Id объекта потребления");
+                    return true;
+                }
+                Console.CursorVisible = false;
+
+                spinner.StartSpinner();
+                TNEBaseDTO<ExpiredElectricEquipmentListDTO<VoltageTransformerDTO>> result = await expiredElectricEquipmentAPI.GetExpiredVoltageTransformers(consObjId);
+                spinner.StopSpinner();
+
+                if (result == null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("[FAIL]");
+                    Console.WriteLine($"Полученный ответ не содержит ожидаемых данных.");
+                }
+                else
+                {
+                    Console.WriteLine("[OK]");
+                    Console.WriteLine($"Ожидаемый статус: 200. Полученный статус: {result.StatusCode} [{((result.StatusCode == 200) ? "OK" : "FAIL")}]");
+                    if (result.StatusCode == 200 && result.Result != null && result.Result.ExpiredElectricEquipment != null)
+                    {
+                        Console.WriteLine($"Вывод списка для объекта потребления: [{result.Result.ConsumptionObjectId}] {result.Result.ConsumptionObjectName}");
+                        if (result.Result.ExpiredElectricEquipment.Count == 0)
+                        {
+                            Console.WriteLine($"Ответ получен правильный, однако, список пуст.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Список трансформаторов напряжения с истёкшими сроками поверки:");
+                        }
+                        for (int i = 0; i < result.Result.ExpiredElectricEquipment.Count; i++)
+                        {
+                            VoltageTransformerDTO expiredEquipment = result.Result.ExpiredElectricEquipment[i];
+                            Console.WriteLine($"{i + 1}. Id: {expiredEquipment.Id}, ном.: {expiredEquipment.Number}" +
+                                $", дата пов.: {expiredEquipment.VerificationDate:dd:MM:yyyy}" +
+                                $", пер. пов.: {expiredEquipment.VerificationPeriod:dd:MM:yyyy}" +
+                                $", КТТ.: {expiredEquipment.TransformationRatio}" +
+                                $", тип: {expiredEquipment.TransformerTypeDescription}");
                         }
                     }
                     else
