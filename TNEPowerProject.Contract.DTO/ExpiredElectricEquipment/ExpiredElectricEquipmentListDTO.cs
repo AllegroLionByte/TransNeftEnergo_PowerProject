@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace TNEPowerProject.Contract.DTO.ElectricityConsumptionObjects
+namespace TNEPowerProject.Contract.DTO.ExpiredElectricEquipment
 {
     /// <summary>
     /// Представляет DTO для списка объектов электрической инфраструктуры (трансформаторов и счётчиков электрической энергии)
