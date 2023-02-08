@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using TNEPowerProject.Domain.Abstract;
 using TNEPowerProject.Domain.Interfaces.Repository;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace TNEPowerProject.Infrastructure.Repository
 {
@@ -153,9 +153,7 @@ namespace TNEPowerProject.Infrastructure.Repository
 
                 if (foundEntity != null)
                 {
-                    foundEntity.upd;
-
-                    await 
+                    // TODO: Прописать логику обновления Generic-функции/сущности
 
                     return true;
                 }
@@ -164,7 +162,7 @@ namespace TNEPowerProject.Infrastructure.Repository
             }
             catch (Exception ex)
             {
-                logger?.LogError(ex, "{Repo}: error during checking element existance {Entity} by {Pred}.", GetType(), typeof(T), predicate);
+                logger?.LogError(ex, "{Repo}: error during checking element existance {Entity} by {Pred}.", GetType(), typeof(T), typeof(Expression<bool>));
                 return false;
             }
         }
