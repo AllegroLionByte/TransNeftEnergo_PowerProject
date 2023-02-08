@@ -143,9 +143,30 @@ namespace TNEPowerProject.Infrastructure.Repository
         /// <summary>
         /// Позволяет обновить объект по Id
         /// </summary>
-        public virtual Task<bool> Update(T entity)
+        public virtual async Task<bool> Update(T entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var foundEntity = await dbContext.Set<T>()
+                    .Where(x => x.Id == entity.Id)
+                    .FirstOrDefaultAsync();
+
+                if (foundEntity != null)
+                {
+                    foundEntity.upd;
+
+                    await 
+
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex, "{Repo}: error during checking element existance {Entity} by {Pred}.", GetType(), typeof(T), predicate);
+                return false;
+            }
         }
         /// <summary>
         /// Позволяет сохранить изменения в БД
